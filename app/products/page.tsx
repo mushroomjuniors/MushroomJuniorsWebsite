@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabaseClient";
-import { ProductGrid, Product } from "@/components/product-grid"; 
-import { ProductFilters } from "@/components/product-filters";
+import { Product } from "@/components/product-grid"; 
+import { ProductDisplayClient } from "@/components/product-display-client";
 
 async function getCategoryIdByName(categoryName: string): Promise<string | null> {
   if (!categoryName) return null;
@@ -89,54 +89,40 @@ export default async function ProductsPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const category = searchParams?.category as string | undefined;
+  const categorySlug = searchParams?.category as string | undefined;
   const sortBy = searchParams?.sortBy as string | undefined;
   const minPrice = searchParams?.minPrice as string | undefined;
   const maxPrice = searchParams?.maxPrice as string | undefined;
 
   const products = await getProducts({
-    categorySlug: category,
+    categorySlug: categorySlug,
     sortBy,
     minPrice,
     maxPrice,
   });
 
+  const pageTitle = categorySlug 
+    ? `${categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Products` 
+    : "All Products";
+
   return (
     <div className="container px-4 py-12 mx-auto">
       <div className="flex flex-col items-center text-center space-y-2 mb-8">
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {category ? `${category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}` : "All Products"}
+          {pageTitle}
         </h1>
         <p className="text-muted-foreground max-w-[700px] text-lg sm:text-xl">
           Explore our curated collection. Filter by price or sort to find your perfect item.
         </p>
       </div>
 
-      {/* Main content area with sidebar and product grid */}
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar for Filters - sticky on medium screens and up */}
-        <aside className="w-full md:w-1/4 lg:w-1/5 xl:w-1/6 md:sticky md:top-20 md:h-[calc(100vh-5rem)] md:overflow-y-auto p-1 rounded-lg border border-border/40 bg-background shadow-sm">
-          <ProductFilters 
-            initialSortBy={sortBy}
-            initialMinPrice={minPrice}
-            initialMaxPrice={maxPrice}
-          />
-        </aside>
-
-        {/* Product Grid Area */}
-        <main className="w-full md:w-3/4 lg:w-4/5 xl:w-5/6">
-          {products.length > 0 ? (
-            <ProductGrid products={products} />
-          ) : (
-            <div className="text-center py-12">
-              <h2 className="text-2xl font-semibold mb-2">No Products Found</h2>
-              <p className="text-muted-foreground">
-                Try adjusting your filters or check back later for new arrivals.
-              </p>
-            </div>
-          )}
-        </main>
-      </div>
+      <ProductDisplayClient 
+        products={products}
+        initialCategory={categorySlug}
+        initialSortBy={sortBy}
+        initialMinPrice={minPrice}
+        initialMaxPrice={maxPrice}
+      />
     </div>
   );
 }

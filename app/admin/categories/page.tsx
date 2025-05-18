@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DeleteCategoryDialog } from "@/components/admin/DeleteCategoryDialog";
+import { ProductImage } from "@/components/admin/ProductImage";
 
 // Define a type for our category data
 export interface Category {
@@ -33,6 +34,7 @@ export interface Category {
   name: string;
   description: string | null;
   created_at: string;
+  image_url: string | null;
 }
 
 async function getCategories(): Promise<Category[]> {
@@ -74,6 +76,7 @@ export default async function AdminCategoriesPage() {
               <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-[60px] sm:w-[80px]">Image</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead className="hidden md:table-cell">Description</TableHead>
                   <TableHead className="hidden md:table-cell">Created At</TableHead>
@@ -85,6 +88,9 @@ export default async function AdminCategoriesPage() {
               <TableBody>
                 {categories.map((category) => (
                   <TableRow key={category.id}>
+                    <TableCell>
+                      <ProductImage src={category.image_url} alt={category.name} />
+                    </TableCell>
                     <TableCell className="font-medium">{category.name}</TableCell>
                     <TableCell className="hidden md:table-cell">
                       {category.description || '-'}

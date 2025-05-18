@@ -15,7 +15,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="font-bold">Free Shipping</h3>
-              <p className="text-sm text-muted-foreground">Free Shipping for orders over $130</p>
+              <p className="text-sm text-muted-foreground">Free Shipping for orders over ₹1000</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -24,7 +24,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="font-bold">Money Guarantee</h3>
-              <p className="text-sm text-muted-foreground">Within 30 days for an exchange</p>
+              <p className="text-sm text-muted-foreground">Within 7 days for an exchange</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -42,7 +42,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="font-bold">Flexible Payment</h3>
-              <p className="text-sm text-muted-foreground">Pay with Multiple Credit Cards</p>
+              <p className="text-sm text-muted-foreground">Pay with Multiple Payment Methods</p>
             </div>
           </div>
         </div>
@@ -52,38 +52,39 @@ export function Footer() {
       <div className="container px-4 py-12 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Company</h3>
+            <h3 className="text-lg font-bold">Mushrooms Junior</h3>
             <p className="text-sm text-muted-foreground">
               Find a location nearest you.
               <br />
               See Our Stores
             </p>
-            <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
-            <p className="text-sm text-muted-foreground">info@stylehub.com</p>
+            <p className="text-sm text-muted-foreground">+91 9829000000</p>
+            <p className="text-sm text-muted-foreground">info@mushroomjunior.com</p>
           </div>
           <div className="space-y-4">
-            <h3 className="text-sm font-bold">Information</h3>
+            <h3 className="text-sm font-bold">Explore</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/account" className="text-muted-foreground hover:text-foreground">
-                  My Account
+            <li>
+                <Link href="/store" className="text-muted-foreground hover:text-foreground">
+                  All Products
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="text-muted-foreground hover:text-foreground">
-                  Login
+                <Link href="/products?category=men" className="text-muted-foreground hover:text-foreground">
+                    Men
                 </Link>
               </li>
               <li>
-                <Link href="/cart" className="text-muted-foreground hover:text-foreground">
-                  My Cart
+                <Link href="/products?category=women" className="text-muted-foreground hover:text-foreground">
+                    Women
                 </Link>
               </li>
               <li>
-                <Link href="/wishlist" className="text-muted-foreground hover:text-foreground">
-                  Wishlist
+                <Link href="/products?category=children" className="text-muted-foreground hover:text-foreground">
+                    Children
                 </Link>
               </li>
+              
               {/* <li>
                 <Link href="/checkout" className="text-muted-foreground hover:text-foreground">
                   Checkout

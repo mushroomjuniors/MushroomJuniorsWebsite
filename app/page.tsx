@@ -19,7 +19,7 @@ interface Category {
 async function getCategories(): Promise<Category[]> {
   const { data, error } = await supabase
     .from('categories')
-    .select('id, name') // We only need id and name for now
+    .select('id, name, image_url')
     .order('name', { ascending: true });
 
   if (error) {

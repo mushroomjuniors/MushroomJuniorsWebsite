@@ -20,7 +20,8 @@ const ProductActionSchema = z.object({
   price: z.coerce.number().positive("Price must be a positive number."),
   stock_quantity: z.coerce.number().int().min(0, "Stock quantity cannot be negative."),
   category_id: z.string().uuid("A valid category must be selected."),
-  image_url: z.string().url({ message: "Please enter a valid image URL." }).optional().or(z.literal('')), 
+  image_url: z.string().url({ message: "Please enter a valid primary image URL." }).optional().or(z.literal('')), 
+  image_urls: z.array(z.string().url({ message: "Invalid URL in gallery images." })).optional(), // For the gallery images array
   sizes: z.array(z.string()).optional(), // Array of selected sizes
 });
 
@@ -45,6 +46,8 @@ export async function createProduct(
 
   const dataToInsert = {
     ...validatedFields.data,
+    image_url: validatedFields.data.image_url || null, // Store null if empty string
+    image_urls: validatedFields.data.image_urls || [], // Default to empty array
     sizes: validatedFields.data.sizes || [], // Ensure sizes is at least an empty array
   };
 
@@ -85,6 +88,8 @@ export async function updateProduct(
 
   const dataToUpdate = {
     ...validatedFields.data,
+    image_url: validatedFields.data.image_url || null, // Store null if empty string
+    image_urls: validatedFields.data.image_urls || [], // Default to empty array
     sizes: validatedFields.data.sizes || [], // Ensure sizes is at least an empty array
   };
 

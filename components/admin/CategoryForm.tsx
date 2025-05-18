@@ -18,6 +18,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createCategory, updateCategory } from "@/app/admin/categories/actions";
+import { useState } from "react";
+import { uploadImageToCloudinary } from "@/app/actions/imageUploadActions";
 
 const categoryFormSchema = z.object({
   name: z.string().min(2, {
@@ -28,37 +30,63 @@ const categoryFormSchema = z.object({
   description: z.string().max(500, {
     message: "Description must not be longer than 500 characters.",
   }).optional(),
+  image_url: z.string().url({ message: "Please enter a valid image URL."}).optional().or(z.literal('')),
 });
 
 export type CategoryFormValues = z.infer<typeof categoryFormSchema>;
 
 interface CategoryFormProps {
-  initialData?: Partial<CategoryFormValues> & { id?: string }; // For editing later
+  initialData?: Partial<CategoryFormValues> & { id?: string; image_url?: string | null };
 }
 
 export function CategoryForm({ initialData }: CategoryFormProps) {
   const router = useRouter();
-  
   const isEditMode = !!initialData?.id;
+
+  const [categoryImageFile, setCategoryImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
-    defaultValues: initialData || { name: "", description: "" },
+    defaultValues: {
+      name: initialData?.name || "",
+      description: initialData?.description || "",
+      image_url: initialData?.image_url || "",
+    },
     mode: "onChange",
   });
 
   async function onSubmit(data: CategoryFormValues) {
+    setIsUploading(true);
+    let finalImageUrl = initialData?.image_url || "";
+
     try {
+      if (categoryImageFile) {
+        const formData = new FormData();
+        formData.append("file", categoryImageFile);
+        const uploadResult = await uploadImageToCloudinary(formData);
+
+        if (uploadResult.success && uploadResult.url) {
+          finalImageUrl = uploadResult.url;
+        } else {
+          throw new Error(uploadResult.error || "Category image upload failed.");
+        }
+      }
+
+      const finalData = {
+        ...data,
+        image_url: finalImageUrl,
+      };
+
       let result;
       if (isEditMode && initialData?.id) {
-        result = await updateCategory(initialData.id, data);
+        result = await updateCategory(initialData.id, finalData);
       } else {
-        result = await createCategory(data);
+        result = await createCategory(finalData);
       }
 
       if (result.error) {
-        // You might want to parse result.fields here for form-specific errors
-        throw new Error(result.error);
+        throw new Error(result.error  + (result.fields ? ` (${Object.values(result.fields).join(', ')})` : ''));
       }
 
       toast.success(isEditMode ? "Category updated" : "Category created", {
@@ -66,12 +94,14 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
           ? `The category "${data.name}" has been updated.`
           : `A new category "${data.name}" has been created.`,
       });
-      router.push("/admin/categories"); // Redirect to categories list
-      router.refresh(); // Refresh server components
+      router.push("/admin/categories");
+      router.refresh();
     } catch (error: any) {
-      toast.error("Uh oh! Something went wrong.", {
+      toast.error("Operation failed:", {
         description: error.message || "There was a problem with your request.",
       });
+    } finally {
+      setIsUploading(false);
     }
   }
 
@@ -105,7 +135,7 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
                   placeholder="A brief description of the category."
                   className="resize-none"
                   {...field}
-                  value={field.value || ""} // Ensure value is not null
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormDescription>
@@ -115,10 +145,39 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting 
+        
+        <FormItem>
+          <FormLabel>Category Image</FormLabel>
+          <FormControl>
+            <Input 
+              type="file" 
+              accept="image/*" 
+              onChange={(e) => setCategoryImageFile(e.target.files ? e.target.files[0] : null)}
+              disabled={isUploading}
+            />
+          </FormControl>
+          <FormDescription>
+            Upload an image for the category. Replaces the current image if one exists.
+          </FormDescription>
+          {initialData?.image_url && !categoryImageFile && (
+            <div className="mt-2">
+              <p className="text-sm text-muted-foreground">Current image:</p>
+              <img src={initialData.image_url} alt="Current category" className="h-24 w-24 object-cover rounded-md border" />
+            </div>
+          )}
+          {categoryImageFile && (
+             <div className="mt-2">
+              <p className="text-sm text-muted-foreground">New image preview:</p>
+              <img src={URL.createObjectURL(categoryImageFile)} alt="New category preview" className="h-24 w-24 object-cover rounded-md border" />
+            </div>
+          )}
+          <FormMessage>{form.formState.errors.image_url?.message}</FormMessage>
+        </FormItem>
+
+        <Button type="submit" disabled={form.formState.isSubmitting || isUploading}>
+          {isUploading ? "Uploading..." : (form.formState.isSubmitting 
             ? (isEditMode ? "Saving..." : "Creating...") 
-            : (isEditMode ? "Save Changes" : "Create Category")}
+            : (isEditMode ? "Save Changes" : "Create Category"))}
         </Button>
       </form>
     </Form>

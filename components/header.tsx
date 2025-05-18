@@ -3,11 +3,56 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { Menu, Search, ShoppingCart, User, X } from "lucide-react"
+import { Menu, Search, ShoppingCart, User, X, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useCart } from "@/components/cart-provider"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+// Helper function to generate a simple slug
+const generateSlug = (name: string) => {
+  if (!name) return '';
+  return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+};
+
+const menSubCategories = [
+  { title: "Dungree" },
+  { title: "Ethnic" },
+  { title: "Frocks" },
+  { title: "Gowns" },
+  { title: "Jackets" },
+  { title: "Jeans" },
+  { title: "Leggings" },
+  { title: "Lowers" },
+  { title: "Midis" },
+  { title: "Party Tops" },
+  { title: "Shorts" },
+  { title: "Toppers" },
+  { title: "T-Shirts" },
+];
+
+const womenSubCategories = [
+  { title: "Dresses (Placeholder)" },
+  { title: "Tops (Placeholder)" },
+  { title: "Bottoms (Placeholder)" },
+  { title: "Outerwear (Placeholder)" },
+  { title: "Accessories (Placeholder)" },
+];
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -54,24 +99,65 @@ export function Header() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-            <nav className="flex flex-col gap-4 mt-8">
-              <Link href="/" className="text-lg font-medium">
+          <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
+            <nav className="flex flex-col gap-1 mt-8">
+              <Link href="/" className="text-lg font-medium py-2 px-3 rounded-md hover:bg-muted">
                 Home
               </Link>
-              <Link href="/store" className="text-lg font-medium">
+              <Link href="/store" className="text-lg font-medium py-2 px-3 rounded-md hover:bg-muted">
                 All Products
               </Link>
-              <Link href="/products/men" className="text-lg font-medium">
-                Men
-              </Link>
-              <Link href="/products/women" className="text-lg font-medium">
-                Women
-              </Link>
-              <Link href="/about" className="text-lg font-medium">
+
+              <Accordion type="multiple" className="w-full">
+                <AccordionItem value="men-category" className="border-b-0">
+                  <AccordionTrigger className={`text-lg font-medium py-2 px-3 hover:no-underline hover:bg-muted rounded-md flex justify-between items-center w-full`}>
+                    Men
+                  </AccordionTrigger>
+                  <AccordionContent className="pl-6 pr-3 pb-1 pt-0">
+                    <nav className="flex flex-col gap-1 mt-1">
+                      {menSubCategories.map((subCategory) => {
+                        const categorySlug = generateSlug(subCategory.title);
+                        return (
+                          <Link
+                            key={subCategory.title}
+                            href={`/products?category=${categorySlug}`}
+                            className="block text-base py-2 px-3 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+                          >
+                            {subCategory.title}
+                          </Link>
+                        );
+                      })}
+                    </nav>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="women-category" className="border-b-0">
+                  <AccordionTrigger className={`text-lg font-medium py-2 px-3 hover:no-underline hover:bg-muted rounded-md flex justify-between items-center w-full`}>
+                    Women
+                  </AccordionTrigger>
+                  <AccordionContent className="pl-6 pr-3 pb-1 pt-0">
+                    <nav className="flex flex-col gap-1 mt-1">
+                      {womenSubCategories.map((subCategory) => {
+                        const categorySlug = generateSlug(subCategory.title);
+                        return (
+                          <Link
+                            key={subCategory.title}
+                            href={`/products?category=${categorySlug}`}
+                            className="block text-base py-2 px-3 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+                          >
+                            {subCategory.title}
+                          </Link>
+                        );
+                      })}
+                    </nav>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              <Link href="/about" className="text-lg font-medium py-2 px-3 rounded-md hover:bg-muted">
                 About
               </Link>
-              <Link href="/contact" className="text-lg font-medium">
+              <Link href="/contact" className="text-lg font-medium py-2 px-3 rounded-md hover:bg-muted">
                 Contact
               </Link>
             </nav>
@@ -79,29 +165,94 @@ export function Header() {
         </Sheet>
 
         <Link href="/" className={`ml-4 md:ml-0 flex items-center gap-2 ${textColor}`}>
-          <span className="text-xl font-bold">StyleHub</span>
+          <span className="text-xl font-bold">Mushrooms Junior</span>
         </Link>
 
-        <nav className="mx-6 hidden md:flex items-center gap-6 text-sm">
-          <Link href="/" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
-            Home
-          </Link>
-          <Link href="/store" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
-            All Products
-          </Link>
-          <Link href="/products/men" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
-            Men
-          </Link>
-          <Link href="/products/women" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
-            Women
-          </Link>
-          <Link href="/about" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
-            About
-          </Link>
-          <Link href="/contact" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
-            Contact
-          </Link>
-        </nav>
+        <NavigationMenu className="mx-6 hidden md:flex items-center gap-6 text-sm">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Link href="/" legacyBehavior passHref>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                  Home
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/store" legacyBehavior passHref>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                  All Products
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            
+            {/* Men Dropdown */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className={`${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50 font-medium`}>
+                Men
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                  {menSubCategories.map((subCategory) => {
+                    const categorySlug = generateSlug(subCategory.title);
+                    return (
+                      <li key={subCategory.title}>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={`/products?category=${categorySlug}`}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="text-sm font-medium leading-none">{subCategory.title}</div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            {/* Women Dropdown Placeholder */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className={`${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50 font-medium`}>
+                Women
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                  {womenSubCategories.map((subCategory) => {
+                    const categorySlug = generateSlug(subCategory.title);
+                    return (
+                      <li key={subCategory.title}>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={`/products?category=${categorySlug}`}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="text-sm font-medium leading-none">{subCategory.title}</div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/about" legacyBehavior passHref>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                  About
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/contact" legacyBehavior passHref>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                  Contact
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="ml-auto flex items-center gap-2">
           {/* {isSearchOpen ? (

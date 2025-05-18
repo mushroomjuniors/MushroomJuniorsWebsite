@@ -27,12 +27,13 @@ export default function ContactPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
         <div
-          className="relative h-[50vh] flex items-center justify-center bg-cover bg-center"
-          style={{ backgroundImage: "url('/placeholder.svg?height=1080&width=1920')" }}
+          className="relative h-[50vh] flex items-center justify-center bg-cover bg-center bg-slate-800"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/contact-bg.avif')`,
+          }}
         >
-          <div className="container px-4 mx-auto text-center">
+          <div className="container px-4 mx-auto text-center z-10">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">Contact Us</h1>
             <p className="mt-4 text-xl text-white max-w-3xl mx-auto">
               We'd love to hear from you. Reach out with any questions, feedback, or inquiries.
@@ -109,11 +110,11 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-medium">Address</h4>
                     <p className="text-muted-foreground">
-                      123 Fashion Street
+                    100 Feet Rd  
                       <br />
-                      New York, NY 10001
+                      Shobhagpura, Udaipur, Rajasthan
                       <br />
-                      United States
+                      India
                     </p>
                   </div>
                 </div>
@@ -121,14 +122,14 @@ export default function ContactPage() {
                   <Phone className="h-5 w-5 text-red-600 mt-0.5" />
                   <div>
                     <h4 className="font-medium">Phone</h4>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                    <p className="text-muted-foreground">+91 9829000000</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="h-5 w-5 text-red-600 mt-0.5" />
                   <div>
                     <h4 className="font-medium">Email</h4>
-                    <p className="text-muted-foreground">info@stylehub.com</p>
+                    <p className="text-muted-foreground">info@mushroomjunior.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -151,14 +152,14 @@ export default function ContactPage() {
               <h3 className="text-xl font-bold mb-4">Store Locations</h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-medium">New York Flagship</h4>
+                  <h4 className="font-medium">Udaipur</h4>
                   <p className="text-muted-foreground">
-                    123 Fashion Street
+                    100 Feet Rd
                     <br />
-                    New York, NY 10001
+                    Shobhagpura, Udaipur, Rajasthan
                   </p>
                 </div>
-                <div>
+                {/* <div>
                   <h4 className="font-medium">Los Angeles</h4>
                   <p className="text-muted-foreground">
                     456 Style Avenue
@@ -173,7 +174,7 @@ export default function ContactPage() {
                     <br />
                     Chicago, IL 60001
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -181,8 +182,17 @@ export default function ContactPage() {
 
         <div className="mt-16">
           <h3 className="text-xl font-bold mb-4">Find Us</h3>
-          <div className="h-[400px] bg-gray-200 rounded-lg flex items-center justify-center">
-            <p className="text-muted-foreground">Map would be displayed here</p>
+          <div className="h-[400px] md:h-[450px] bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3627.5325104165904!2d73.7067500109828!3d24.6053249553278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e5a5bce203eb%3A0xdbee26a8c1e005fc!2sMushroom%20Juniors!5e0!3m2!1sen!2sin!4v1747568285071!5m2!1sen!2sin" 
+              width="100%"
+              height="100%"
+              style={{ border:0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            >
+            </iframe>
           </div>
         </div>
       </div>

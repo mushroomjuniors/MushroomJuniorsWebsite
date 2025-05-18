@@ -4,12 +4,13 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
         <div
-          className="relative h-[50vh] flex items-center justify-center bg-cover bg-center"
-          style={{ backgroundImage: "url('/placeholder.svg?height=1080&width=1920')" }}
+          className="relative h-[50vh] flex items-center justify-center bg-cover bg-center bg-slate-800"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/about-bg.avif')`,
+          }}
         >
-          <div className="container px-4 mx-auto text-center">
+          <div className="container px-4 mx-auto text-center z-10">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">About Us</h1>
             <p className="mt-4 text-xl text-white max-w-3xl mx-auto">
               Discover the story behind our brand and join us on a journey of style, quality, and innovation.
@@ -23,11 +24,11 @@ export default function AboutPage() {
           <div>
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-muted-foreground mb-4">
-              Founded in 2010, StyleHub began with a simple mission: to provide high-quality, stylish clothing that
+              Founded in 2010, Mushrooms Junior began with a simple mission: to provide high-quality, stylish clothing that
               empowers people to express themselves through fashion.
             </p>
             <p className="text-muted-foreground mb-4">
-              What started as a small boutique in New York has grown into a global brand, but our commitment to quality,
+              What started as a small boutique has grown into a household name, but our commitment to quality,
               sustainability, and customer satisfaction remains unchanged.
             </p>
             <p className="text-muted-foreground">
@@ -36,7 +37,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="relative h-[400px] rounded-lg overflow-hidden">
-            <Image src="/placeholder.svg?height=800&width=600" alt="Our store" fill className="object-cover" />
+            <Image src="/mushrooms-about.webp?height=800&width=600" alt="Our store" fill className="object-cover" />
           </div>
         </div>
 
@@ -113,7 +114,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-8 rounded-lg">
+        {/* <div className="bg-gray-50 p-8 rounded-lg">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-2">Meet Our Team</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -136,7 +137,7 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -26,6 +26,7 @@ async function getProductById(id: string): Promise<ProductType | null> {
       price,
       description,
       image_url,
+      image_urls,
       sizes,
       created_at
     `)
@@ -49,13 +50,22 @@ async function getProductById(id: string): Promise<ProductType | null> {
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   const isNew = new Date(productData.created_at) > sevenDaysAgo;
   
+  // Prepare image_urls for the client component
+  let finalImageUrls: string[] | null = null;
+  if (productData.image_urls && productData.image_urls.length > 0) {
+    finalImageUrls = productData.image_urls;
+  } else if (productData.image_url) {
+    // Fallback: if image_urls is empty but image_url exists, use it as a single-item gallery
+    finalImageUrls = [productData.image_url];
+  }
+
   return {
     id: productData.id,
     name: productData.name,
     price: productData.price,
     description: productData.description,
     image_url: productData.image_url,
-    image_urls: productData.image_url ? [productData.image_url] : [],
+    image_urls: finalImageUrls,
     sizes: productData.sizes,
     colors: null, // Set to null as colors column does not exist
     details: null, // Set to null as details column does not exist
@@ -64,11 +74,13 @@ async function getProductById(id: string): Promise<ProductType | null> {
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  if (!params.id) {
+  const { id } = params;
+
+  if (!id) {
     notFound(); 
   }
 
-  const product = await getProductById(params.id);
+  const product = await getProductById(id);
 
   if (!product) {
     notFound(); 

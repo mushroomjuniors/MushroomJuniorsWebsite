@@ -19,6 +19,7 @@ import { z } from "zod";
 const CategoryActionSchema = z.object({
   name: z.string().min(2).max(100),
   description: z.string().max(500).optional(),
+  image_url: z.string().url({ message: "Please enter a valid image URL." }).optional().or(z.literal('')),
 });
 
 export type CategoryActionState = {
@@ -39,12 +40,12 @@ export async function createCategory(
     };
   }
 
-  const { name, description } = validatedFields.data;
+  const { name, description, image_url } = validatedFields.data;
 
   try {
     const { error } = await supabaseAdmin
       .from("categories")
-      .insert([{ name, description: description || null }])
+      .insert([{ name, description: description || null, image_url: image_url || null }])
       .select(); // .select() can be useful if you want to return the created object
 
     if (error) {
@@ -80,12 +81,12 @@ export async function updateCategory(
     };
   }
 
-  const { name, description } = validatedFields.data;
+  const { name, description, image_url } = validatedFields.data;
 
   try {
     const { error } = await supabaseAdmin
       .from("categories")
-      .update({ name, description: description || null })
+      .update({ name, description: description || null, image_url: image_url || null })
       .eq("id", id)
       .select(); // .select() can be useful if you want to return the updated object
 
