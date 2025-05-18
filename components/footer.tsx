@@ -84,11 +84,11 @@ export function Footer() {
                   Wishlist
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/checkout" className="text-muted-foreground hover:text-foreground">
                   Checkout
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="space-y-4">
@@ -99,16 +99,16 @@ export function Footer() {
                   About Us
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/careers" className="text-muted-foreground hover:text-foreground">
                   Careers
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link href="/delivery-info" className="text-muted-foreground hover:text-foreground">
                   Delivery Information
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/privacy-policy" className="text-muted-foreground hover:text-foreground">
                   Privacy Policy
@@ -146,13 +146,11 @@ export function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 border-t pt-8 mt-8 md:flex-row">
           <div className="flex gap-2">
-            <img src="/placeholder.svg?height=30&width=50" alt="American Express" className="h-8" />
-            <img src="/placeholder.svg?height=30&width=50" alt="Google Pay" className="h-8" />
-            <img src="/placeholder.svg?height=30&width=50" alt="Mastercard" className="h-8" />
-            <img src="/placeholder.svg?height=30&width=50" alt="PayPal" className="h-8" />
-            <img src="/placeholder.svg?height=30&width=50" alt="Visa" className="h-8" />
+            <img src="/visa.png?height=30&width=50" alt="American Express" className="h-8" />
+            <img src="/card.png?height=30&width=50" alt="Google Pay" className="h-8" />
+            <img src="/google-pay.png?height=30&width=50" alt="Mastercard" className="h-8" />
           </div>
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} StyleHub. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Mushrooms Junior. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="#" className="text-muted-foreground hover:text-foreground">
               <Facebook className="h-5 w-5" />

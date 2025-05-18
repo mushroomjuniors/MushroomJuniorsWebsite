@@ -104,7 +104,7 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
-          {isSearchOpen ? (
+          {/* {isSearchOpen ? (
             <div className="relative flex items-center">
               <Input type="search" placeholder="Search products..." className="w-[200px] md:w-[300px]" autoFocus />
               <Button variant="ghost" size="icon" className="absolute right-0" onClick={() => setIsSearchOpen(false)}>
@@ -122,7 +122,7 @@ export function Header() {
           <Button variant="ghost" size="icon" className={iconColor}>
             <User className="h-5 w-5" />
             <span className="sr-only">Account</span>
-          </Button>
+          </Button> */}
 
           <Link href="/cart">
             <Button variant="ghost" size="icon" className={`relative ${iconColor}`}>
