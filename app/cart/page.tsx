@@ -19,7 +19,7 @@ export default function CartPage() {
           <h1 className="text-2xl font-bold">Your cart is empty</h1>
           <p className="text-muted-foreground mt-2">Looks like you haven't added anything to your cart yet.</p>
           <Button asChild className="mt-6">
-            <Link href="/products">Continue Shopping</Link>
+            <Link href="/store">Continue Shopping</Link>
           </Button>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function CartPage() {
               Clear Cart
             </Button>
             <Button asChild variant="outline">
-              <Link href="/products">Continue Shopping</Link>
+              <Link href="/store">Continue Shopping</Link>
             </Button>
           </div>
         </div>
@@ -97,6 +97,18 @@ export default function CartPage() {
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">{item.quantity || 1} ×</span>
+                      <span className="text-sm">{item.name}</span>
+                    </div>
+                    <span className="text-sm font-medium">${(item.price * (item.quantity || 1)).toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+              <Separator />
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
@@ -116,8 +128,8 @@ export default function CartPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button asChild className="w-full">
-                <Link href="/checkout">Proceed to Checkout</Link>
+              <Button asChild className="w-full bg-red-600 hover:bg-red-700">
+                <Link href="/inquire">Inquire Now</Link>
               </Button>
             </CardFooter>
           </Card>

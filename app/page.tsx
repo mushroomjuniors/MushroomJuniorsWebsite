@@ -6,6 +6,8 @@ import { FeaturedProducts, Product as FeaturedProductType } from "@/components/f
 import { HeroSection } from "@/components/hero-section";
 import { CategorySection } from "@/components/category-section";
 import { supabase } from "@/lib/supabaseClient";
+import { ScrollTicker } from "@/components/scroll-ticker";
+import { CTAPopup } from "@/components/cta-popup";
 
 // Define a simple type for categories, matching what CategorySection expects
 interface Category {
@@ -65,25 +67,24 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection />
+      <ScrollTicker />
       <div className="container px-4 py-12 mx-auto space-y-16">
-        <CategorySection categories={categories} /> {/* Pass fetched categories */}
-        {/* Pass fetched products to FeaturedProducts */}
-        <FeaturedProducts products={featuredProducts} /> 
+        <CategorySection categories={categories} />
+        <FeaturedProducts products={featuredProducts} />
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Ready to upgrade your style?
-          </h2>
+          <h2 className="text-3xl font-bold tracking-tight">Ready to upgrade your style?</h2>
           <p className="max-w-[600px] text-muted-foreground">
             Discover our latest collections and find your perfect fit.
           </p>
-          <Button asChild size="lg">
-            <Link href="/products">
+          <Button asChild size="lg" className="bg-brand-black hover:bg-brand-black/90 text-white">
+            <Link href="/store">
               <ShoppingBag className="w-4 h-4 mr-2" />
               Shop Now
             </Link>
           </Button>
         </div>
       </div>
+      <CTAPopup />
     </div>
   );
 }

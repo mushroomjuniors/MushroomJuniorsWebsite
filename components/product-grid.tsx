@@ -31,7 +31,7 @@ function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart()
 
   return (
-    <Card className="overflow-hidden group">
+    <Card className="py-0 overflow-hidden group">
       <Link href={`/products/${product.id}`}>
         <div className="relative aspect-square overflow-hidden">
           <Image

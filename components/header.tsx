@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { Menu, Search, ShoppingCart, User, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,25 +11,55 @@ import { useCart } from "@/components/cart-provider"
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const { cartItems } = useCart()
   const cartItemCount = cartItems.length
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    if (isHomePage) {
+      window.addEventListener("scroll", handleScroll)
+    } else {
+      setScrolled(true)
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [isHomePage])
+
+  const headerClasses = isHomePage
+    ? `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white border-b" : "bg-transparent"}`
+    : "sticky top-0 z-50 w-full border-b bg-background"
+
+  const textColor = isHomePage && !scrolled ? "text-white" : "text-foreground"
+  const iconColor = isHomePage && !scrolled ? "text-white" : "text-foreground"
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
+    <header className={headerClasses}>
       <div className="container flex h-16 items-center px-4">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
+            <Button variant="ghost" size="icon" className={`md:hidden ${iconColor}`}>
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-            <nav className="flex flex-col gap-4 mt-8 ml-4">
+            <nav className="flex flex-col gap-4 mt-8">
               <Link href="/" className="text-lg font-medium">
                 Home
               </Link>
-              <Link href="/products" className="text-lg font-medium">
+              <Link href="/store" className="text-lg font-medium">
                 All Products
               </Link>
               <Link href="/products/men" className="text-lg font-medium">
@@ -47,27 +78,33 @@ export function Header() {
           </SheetContent>
         </Sheet>
 
-        <Link href="/" className="ml-4 md:ml-0 flex items-center gap-2">
+        <Link href="/" className={`ml-4 md:ml-0 flex items-center gap-2 ${textColor}`}>
           <span className="text-xl font-bold">StyleHub</span>
         </Link>
 
         <nav className="mx-6 hidden md:flex items-center gap-6 text-sm">
-          <Link href="/" className="font-medium transition-colors hover:text-primary">
+          <Link href="/" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
             Home
           </Link>
-          <Link href="/products" className="font-medium transition-colors hover:text-primary">
+          <Link href="/store" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
             All Products
           </Link>
-          <Link href="/products/men" className="font-medium transition-colors hover:text-primary">
+          <Link href="/products/men" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
             Men
           </Link>
-          <Link href="/products/women" className="font-medium transition-colors hover:text-primary">
+          <Link href="/products/women" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
             Women
+          </Link>
+          <Link href="/about" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
+            About
+          </Link>
+          <Link href="/contact" className={`font-medium transition-colors hover:text-primary ${textColor}`}>
+            Contact
           </Link>
         </nav>
 
-         <div className="ml-auto flex items-center gap-2">
-          {/*{isSearchOpen ? (
+        <div className="ml-auto flex items-center gap-2">
+          {isSearchOpen ? (
             <div className="relative flex items-center">
               <Input type="search" placeholder="Search products..." className="w-[200px] md:w-[300px]" autoFocus />
               <Button variant="ghost" size="icon" className="absolute right-0" onClick={() => setIsSearchOpen(false)}>
@@ -76,22 +113,22 @@ export function Header() {
               </Button>
             </div>
           ) : (
-            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
+            <Button variant="ghost" size="icon" className={iconColor} onClick={() => setIsSearchOpen(true)}>
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
             </Button>
           )}
 
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className={iconColor}>
             <User className="h-5 w-5" />
             <span className="sr-only">Account</span>
-          </Button> */}
+          </Button>
 
           <Link href="/cart">
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="ghost" size="icon" className={`relative ${iconColor}`}>
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-medium text-white">
                   {cartItemCount}
                 </span>
               )}
