@@ -1,120 +1,86 @@
-import Link from "next/link";
-import {
-  CircleUser,
-  Package2,
-  Search, // Kept for optional search bar
-  LayoutDashboard,
-  Tags,
-  Boxes
-} from "lucide-react";
+"use client"; // This layout will use hooks, so it can be a client component or parts of it.
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input"; // Kept for optional search bar
+import { PropsWithChildren, useEffect } from 'react';
+import { useUser, UserButton, SignedIn, useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Home, Package2, ShieldAlert } from 'lucide-react'; // Added ShieldAlert for mobile message
+import { Footer } from '@/components/footer';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function AdminHeader() {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      {/* Desktop Sidebar */}
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
-          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Package2 className="h-6 w-6" />
-              <span className="">Mush Kids Admin</span>
-            </Link>
-          </div>
-          <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <Link
-                href="/admin"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <LayoutDashboard className="h-5 w-5" />
-                Dashboard
-              </Link>
-              <Link
-                href="/admin/categories"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Tags className="h-5 w-5" />
-                Categories
-              </Link>
-              <Link
-                href="/admin/products"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Boxes className="h-5 w-5" />
-                Products
-              </Link>
-            </nav>
-          </div>
+    // Hide header on mobile, show on md and up
+    <header className="sticky top-0 z-40 hidden w-full border-b bg-background md:block">
+      <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+        <Link href="/admin" className="flex items-center space-x-2">
+          <Home className="h-6 w-6" /> 
+          <span className="font-bold sm:inline-block">Admin Panel</span>
+        </Link>
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         </div>
       </div>
+    </header>
+  );
+}
 
-      {/* Main Area: Either Mobile Message OR Desktop Header + Content */}
-      <div className="flex flex-col flex-1">
-        {/* Mobile-only Message */}
-        <div className="block md:hidden h-screen flex flex-col items-center justify-center p-6 text-center bg-background">
-          <Package2 className="h-12 w-12 mb-6 text-primary" /> 
-          <h1 className="text-2xl font-semibold mb-3">Admin Panel</h1>
-          <p className="text-lg text-muted-foreground mb-1">
-            This area is best viewed on a larger screen.
-          </p>
-          <p className="text-md text-muted-foreground">
-            Please switch to desktop or tablet for full access.
-          </p>
-        </div>
+export default function AdminLayout({ children }: PropsWithChildren) {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { orgRole } = useAuth(); // orgSlug removed as it wasn't used in example logic
+  const router = useRouter();
 
-        {/* Desktop Header + Content (Hidden on mobile) */}
-        <div className="hidden md:flex md:flex-col md:flex-1">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-            <div className="w-full flex-1">
-              {/* Optional: Add a search bar here if needed later */}
-              {/* <form>
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search products..."
-                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                  />
-                </div>
-              </form> */}
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="rounded-full">
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </header>
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            {children}
-          </main>
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push('/sign-in?redirect_url=' + window.location.pathname);
+      return;
+    }
+    if (isLoaded && isSignedIn) {
+      const isAdmin = user?.publicMetadata?.role === 'admin';
+      if (!isAdmin) {
+        router.push('/'); 
+      }
+    }
+  }, [isLoaded, isSignedIn, user, orgRole, router]); // orgSlug removed from dependencies
+
+  // Loading state or if user is not admin (will be redirected soon)
+  if (!isLoaded || !isSignedIn || !(user?.publicMetadata?.role === 'admin')) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        {/* Still show a minimal header or nothing on mobile during loading/redirect */}
+        <div className="sticky top-0 z-40 w-full border-b bg-background md:hidden">
+          <div className="container flex h-16 items-center justify-center">
+             <span className="font-bold">Admin Area</span>
+          </div>
         </div>
+        <AdminHeader /> {/* This is hidden on mobile by its own classes */}
+        <main className="flex flex-1 items-center justify-center">
+          <p>Loading access control...</p> 
+        </main>
+        <Footer />
       </div>
+    );
+  }
+
+  // User is loaded, signed in, and is an admin - content display logic
+  return (
+    <div className="flex flex-col min-h-screen">
+      <AdminHeader />
+      {/* Mobile-only Message - shown if screen is small */}
+      <div className="block md:hidden h-screen flex-grow flex flex-col items-center justify-center p-6 text-center bg-background">
+        <ShieldAlert className="h-12 w-12 mb-6 text-destructive" /> 
+        <h1 className="text-2xl font-semibold mb-3">Admin Panel Not Available</h1>
+        <p className="text-lg text-muted-foreground">
+          This admin panel is designed for desktop use only.
+        </p>
+        <p className="text-sm text-muted-foreground mt-1">
+          Please access it from a device with a larger screen.
+        </p>
+      </div>
+
+      {/* Desktop Content - hidden on small screens, shown on md and up */}
+      <main className="hidden md:block flex-1 p-4 md:p-8">{children}</main>
     </div>
   );
 }

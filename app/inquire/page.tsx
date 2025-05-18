@@ -1,34 +1,79 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
 import Link from "next/link"
 import { ChevronLeft, Mail, MapPin, Phone } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useCart } from "@/components/cart-provider"
+import { createInquiry } from "@/app/actions/inquiryActions"
+import { inquiryFormSchema, type InquiryFormValues } from "@/lib/types/inquiryTypes"
 
 export default function InquirePage() {
-  const { cartItems, subtotal } = useCart()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const { cartItems, subtotal, clearCart } = useCart()
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  const form = useForm<InquiryFormValues>({
+    resolver: zodResolver(inquiryFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      subject: "Inquiry about items in cart",
+      message: "",
+      cartItems: [],
+    },
+  })
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 1500)
+  const { handleSubmit, control, formState: { isSubmitting, isSubmitSuccessful }, reset } = form
+
+  const onSubmit = async (data: InquiryFormValues) => {
+    const inquiryData = {
+      ...data,
+      cartItems: cartItems.map(item => ({
+        id: String(item.id),
+        name: item.name,
+        price: item.price || 0,
+        quantity: item.quantity || 1,
+        image_url: item.image || null,
+      })),
+    };
+
+    try {
+      const result = await createInquiry(inquiryData)
+      if (result.isSuccess) {
+        toast.success("Inquiry Sent!", {
+          description: result.message || "Thank you for your inquiry. We'll get back to you soon.",
+        })
+        reset()
+      } else {
+        if (result.fields) {
+          Object.entries(result.fields).forEach(([fieldName, fieldError]) => {
+            if (Array.isArray(fieldError) && fieldError.length > 0) {
+              form.setError(fieldName as keyof InquiryFormValues, { message: fieldError.join(", ") })
+            } else if (typeof fieldError === 'string') {
+               form.setError(fieldName as keyof InquiryFormValues, { message: fieldError })
+            }
+          })
+        }
+        throw new Error(result.error || "An unknown error occurred while sending your inquiry.")
+      }
+    } catch (error: any) {
+      toast.error("Submission Failed", {
+        description: error.message || "There was a problem sending your inquiry. Please try again.",
+      })
+    }
   }
 
-  if (isSubmitted) {
+  if (isSubmitSuccessful && !isSubmitting) {
     return (
       <div className="container px-4 py-12 mx-auto max-w-md">
         <Card className="text-center">
@@ -37,9 +82,20 @@ export default function InquirePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>Thank you for your inquiry. We'll get back to you as soon as possible.</p>
-            <Button asChild className="mt-4">
+            <Button asChild className="m-4">
               <Link href="/">Return to Home</Link>
             </Button>
+             <Button variant="outline" onClick={() => {
+                form.reset({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: "",
+                    subject: "Inquiry about items in cart",
+                    message: "",
+                    cartItems: [],
+                });
+             }}>Send Another Inquiry</Button>
           </CardContent>
         </Card>
       </div>
@@ -57,75 +113,82 @@ export default function InquirePage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2">
-          <h1 className="text-2xl font-bold mb-6">Contact Us</h1>
+          <h1 className="text-2xl font-bold mb-2">Submit Your Inquiry</h1>
           <p className="text-muted-foreground mb-8">
-            Have questions about our products or your order? Fill out the form below and we'll get back to you as soon
-            as possible.
+            Please provide your contact details. We will get back to you regarding the items in your cart.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input id="firstName" required />
+          <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField control={control} name="firstName" render={({ field }) => (
+                  <FormItem><FormLabel>First Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                )} />
+                <FormField control={control} name="lastName" render={({ field }) => (
+                  <FormItem><FormLabel>Last Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                )} />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input id="lastName" required />
-              </div>
-            </div>
+              <FormField control={control} name="email" render={({ field }) => (
+                <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" {...field} /></FormControl><FormMessage /></FormItem>
+              )} />
+              <FormField control={control} name="phone" render={({ field }) => (
+                <FormItem><FormLabel>Phone (Optional)</FormLabel><FormControl><Input type="tel" {...field} /></FormControl><FormMessage /></FormItem>
+              )} />
+              <FormField control={control} name="subject" render={({ field }) => (
+                <FormItem><FormLabel>Subject</FormLabel><FormControl><Input {...field} /></FormControl>
+                <FormDescription>Defaulted to cart inquiry, you can change if needed.</FormDescription>
+                <FormMessage /></FormItem>
+              )} />
+              <FormField control={control} name="message" render={({ field }) => (
+                <FormItem><FormLabel>Additional Message (Optional)</FormLabel><FormControl><Textarea rows={5} placeholder="Include any specific details or questions here..." {...field} /></FormControl><FormMessage /></FormItem>
+              )} />
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required />
-            </div>
+              {cartItems.length > 0 ? (
+                <div className="p-4 bg-muted rounded-lg space-y-3">
+                  <h3 className="text-lg font-semibold">Items for Inquiry:</h3>
+                  <ul className="space-y-2 text-sm">
+                    {cartItems.map((item) => (
+                      <li key={item.id} className="flex justify-between items-center">
+                        <span>{item.name} (x {item.quantity || 1})</span>
+                        <span>Enquire for price</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="border-t pt-3 mt-3">
+                    <p className="flex justify-between text-md font-semibold">
+                        <span>Subtotal:</span>
+                        <span>To be quoted</span>
+                    </p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    These items will be included with your inquiry.
+                  </p>
+                </div>
+              ) : (
+                 <Card className="my-6">
+                    <CardContent className="pt-6 text-center">
+                        <p className="text-muted-foreground">Your cart is currently empty.</p>
+                        <Button asChild variant="link" className="mt-2">
+                            <Link href="/store">Browse Products</Link>
+                        </Button>
+                    </CardContent>
+                 </Card>
+              )}
 
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              <Input id="phone" type="tel" />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Input id="subject" required />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
-                rows={5}
-                required
-                placeholder="Please include any specific details about your inquiry..."
-              />
-            </div>
-
-            {cartItems.length > 0 && (
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="font-medium mb-2">Items in your cart:</h3>
-                <ul className="space-y-1 text-sm">
-                  {cartItems.map((item) => (
-                    <li key={item.id}>
-                      {item.name} - ${item.price.toFixed(2)} x {item.quantity || 1}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-2 font-medium">Total: ${subtotal.toFixed(2)}</p>
-              </div>
-            )}
-
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Send Inquiry"}
-            </Button>
-          </form>
+              <Button type="submit" className="w-full" disabled={isSubmitting || cartItems.length === 0}>
+                {isSubmitting ? "Sending..." : "Send Inquiry"}
+              </Button>
+              {cartItems.length === 0 && <p className="text-sm text-center text-red-600">Please add items to your cart before sending an inquiry.</p>}
+            </form>
+          </Form>
         </div>
 
-        <div>
+        <div className="lg:sticky lg:top-24 self-start">
           <Card>
             <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
+              <CardTitle>Our Contact Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-start gap-3">
@@ -133,54 +196,30 @@ export default function InquirePage() {
                 <div>
                   <h3 className="font-medium">Address</h3>
                   <p className="text-sm text-muted-foreground">
-                    123 Fashion Street
+                    100 ft Road
                     <br />
-                    New York, NY 10001
+                    Udaipur, Rajasthan
                     <br />
-                    United States
+                    India
                   </p>
                 </div>
               </div>
-
               <div className="flex items-start gap-3">
                 <Phone className="h-5 w-5 text-red-600 mt-0.5" />
                 <div>
                   <h3 className="font-medium">Phone</h3>
                   <p className="text-sm text-muted-foreground">
-                    +1 (555) 123-4567
-                    <br />
-                    Monday - Friday, 9am - 6pm EST
+                    +91 98290 00000
                   </p>
                 </div>
               </div>
-
               <div className="flex items-start gap-3">
                 <Mail className="h-5 w-5 text-red-600 mt-0.5" />
                 <div>
                   <h3 className="font-medium">Email</h3>
                   <p className="text-sm text-muted-foreground">
-                    info@stylehub.com
-                    <br />
-                    support@stylehub.com
+                    info@mushroomsjunior.com
                   </p>
-                </div>
-              </div>
-
-              <div className="pt-4 mt-4 border-t">
-                <h3 className="font-medium mb-2">Business Hours</h3>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span>9:00 AM - 6:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Saturday:</span>
-                    <span>10:00 AM - 4:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span>Closed</span>
-                  </div>
                 </div>
               </div>
             </CardContent>

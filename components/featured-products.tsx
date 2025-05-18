@@ -63,56 +63,54 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
 function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
 
-  // Note: The addToCart in featured-products.tsx originally mapped image_url to image.
-  // The version from product-grid.tsx uses product.image_url directly if available.
-  // This should be fine as useCart's addToCart expects `image: string`.
-
   return (
-    <Card className="py-0 overflow-hidden group flex flex-col gap-0">
-      <Link href={`/products/${product.id}`} passHref className="block flex leading-none">
-        <div className="relative aspect-[4/5] w-full overflow-hidden">
+    <Card className="py-0 overflow-hidden group flex flex-col transition-transform duration-300 ease-in-out group-hover:scale-105">
+      <CardContent className="p-0 relative aspect-[4/5] w-full flex-grow">
+        <Link href={`/products/${product.id}`} passHref className="block absolute inset-0 z-0">
           <Image
-            src={product.image_url || "/placeholder.svg?width=320&height=400"} // Placeholder example
+            src={product.image_url || "/placeholder.svg?width=320&height=400"} 
             alt={product.name}
             fill
-            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw" // Adjusted sizes
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
-        </div>
-      </Link>
-
-      <div className="border-t border-gray-200 dark:border-gray-700">
-        <CardContent className="p-2"> 
-          <Link href={`/products/${product.id}`} className="hover:underline">
-            <h3 
-              className="font-medium text-sm leading-tight truncate" // Font size back to text-sm
-              title={product.name}
-            >
-              {product.name}
-            </h3>
-          </Link>
-          <p className="font-semibold text-base text-red-600 mt-1"> {/* Font size to text-base, mt back to 1 */}
-            ${product.price.toFixed(2)}
-          </p>
-        </CardContent>
-
-        <CardFooter className="p-2 pt-0"> 
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/50 to-transparent pointer-events-none" />
+        </Link>
+        
+        <div className="absolute inset-x-0 bottom-0 p-3 flex flex-row justify-between items-center z-10"> 
+          <div>
+            <Link href={`/products/${product.id}`} className="hover:underline">
+              <h3 
+                className="font-semibold text-sm text-white leading-tight truncate" 
+                title={product.name}
+              >
+                {product.name}
+              </h3>
+            </Link>
+            <p className="text-xs text-white/80">Enquire for price</p>
+          </div>
           <Button 
-            className="w-full bg-red-600 hover:bg-red-700 text-white text-sm" // Font text-sm, removed h-8
-            size="sm" 
-            onClick={() => addToCart({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image_url || "/placeholder.svg",
-              quantity: 1,
-            })}
+            variant="outline" 
+            size="icon" 
+            className="h-8 w-8 bg-white/20 hover:bg-white/30 border-white/30 text-white rounded-full backdrop-blur-sm flex-shrink-0"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCart({
+                id: product.id,
+                name: product.name,
+                price: product.price, // Passing original price, cart will handle display
+                image: product.image_url || "/placeholder.svg",
+                quantity: 1,
+              });
+            }}
+            title="Add to cart"
           >
-            <ShoppingCart className="h-4 w-4 mr-1.5" /> {/* Icon size and margin back up slightly */}
-            Add to Cart
+            <ShoppingCart className="h-4 w-4" /> 
+            <span className="sr-only">Add to Cart</span>
           </Button>
-        </CardFooter>
-      </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }

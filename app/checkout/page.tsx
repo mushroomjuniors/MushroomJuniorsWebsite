@@ -12,6 +12,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCart } from "@/components/cart-provider"
+import type React from "react"
+
+// Define the type for cart items, matching the one in cart-provider.tsx
+interface CartItem {
+  id: string;
+  name: string;
+  price?: number;
+  image: string;
+  quantity?: number;
+  // Add other fields if they exist in your Product type in cart-provider
+  // For example: category?: string; isNew?: boolean;
+}
 
 export default function CheckoutPage() {
   const { cartItems, subtotal, clearCart } = useCart()
@@ -59,7 +71,7 @@ export default function CheckoutPage() {
     )
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -273,7 +285,7 @@ export default function CheckoutPage() {
   )
 }
 
-function OrderSummary({ cartItems, subtotal }) {
+function OrderSummary({ cartItems, subtotal }: { cartItems: CartItem[], subtotal: number }) {
   return (
     <Card>
       <CardHeader>
@@ -281,20 +293,22 @@ function OrderSummary({ cartItems, subtotal }) {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          {cartItems.map((item) => (
+          {cartItems.map((item: CartItem) => (
             <div key={item.id} className="flex justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">{item.quantity || 1} ×</span>
                 <span className="text-sm">{item.name}</span>
               </div>
-              <span className="text-sm font-medium">${(item.price * (item.quantity || 1)).toFixed(2)}</span>
+              {/* <span className="text-sm font-medium">${(item.price * (item.quantity || 1)).toFixed(2)}</span> */}
+              <span className="text-sm font-medium">Enquire for price</span>
             </div>
           ))}
         </div>
         <Separator />
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>${subtotal.toFixed(2)}</span>
+          {/* <span>${subtotal.toFixed(2)}</span> */}
+          <span>To be quoted</span>
         </div>
         <div className="flex justify-between">
           <span>Shipping</span>
@@ -307,7 +321,8 @@ function OrderSummary({ cartItems, subtotal }) {
         <Separator />
         <div className="flex justify-between font-bold">
           <span>Total</span>
-          <span>${subtotal.toFixed(2)}</span>
+          {/* <span>${subtotal.toFixed(2)}</span> */}
+          <span>To be quoted</span>
         </div>
       </CardContent>
     </Card>

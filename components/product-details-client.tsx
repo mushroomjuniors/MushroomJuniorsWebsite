@@ -71,7 +71,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: product.price, // Price is present for type consistency, cart will handle display/enquiry
       image: product.image_url || "/placeholder.svg",
       quantity,
       // You might want to add selectedSize and selectedColor to the cart item
@@ -137,7 +137,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold">{product.name}</h1>
-              <p className="text-2xl font-bold mt-2">${product.price.toFixed(2)}</p>
+              <p className="text-xl font-semibold mt-2 text-gray-700 dark:text-gray-300">Enquire for price</p>
             </div>
 
             {product.description && <p className="text-muted-foreground">{product.description}</p>}

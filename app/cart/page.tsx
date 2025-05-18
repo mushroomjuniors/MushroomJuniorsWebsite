@@ -43,10 +43,16 @@ export default function CartPage() {
                     <div className="flex-1">
                       <h3 className="font-medium">{item.name}</h3>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {item.selectedSize && `Size: ${item.selectedSize}`}
-                        {item.selectedColor && `, Color: ${item.selectedColor}`}
+                        {/* Display selected options if they exist on the item */}
+                        {/* Example: item.selectedSize ? `Size: ${item.selectedSize}` : '' */}
+                        {/* Example: item.selectedColor ? `, Color: ${item.selectedColor}` : '' */}
                       </p>
-                      <p className="font-bold mt-1">${item.price.toFixed(2)}</p>
+                      {/* <p className="font-bold mt-1">${item.price.toFixed(2)}</p> */}
+                      {item.price !== undefined ? (
+                        <p className="text-xs text-muted-foreground mt-1">Price: Enquire</p>
+                      ) : (
+                        <p className="text-xs text-muted-foreground mt-1">Price not available</p> // Fallback if price is truly undefined
+                      )}
                     </div>
                     <div className="flex items-center mt-4 sm:mt-0">
                       <Button
@@ -104,14 +110,16 @@ export default function CartPage() {
                       <span className="text-sm font-medium">{item.quantity || 1} ×</span>
                       <span className="text-sm">{item.name}</span>
                     </div>
-                    <span className="text-sm font-medium">${(item.price * (item.quantity || 1)).toFixed(2)}</span>
+                    {/* <span className="text-sm font-medium">${(item.price * (item.quantity || 1)).toFixed(2)}</span> */}
+                    <span className="text-sm font-medium">Enquire for price</span>
                   </div>
                 ))}
               </div>
               <Separator />
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                {/* <span>${subtotal.toFixed(2)}</span> */}
+                <span>To be quoted</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
@@ -124,7 +132,8 @@ export default function CartPage() {
               <Separator />
               <div className="flex justify-between font-bold">
                 <span>Total</span>
-                <span>${subtotal.toFixed(2)}</span>
+                {/* <span>${subtotal.toFixed(2)}</span> */}
+                <span>To be quoted</span>
               </div>
             </CardContent>
             <CardFooter>

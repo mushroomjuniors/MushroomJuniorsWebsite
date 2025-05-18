@@ -1,27 +1,59 @@
 "use client"
 
-import type React from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
+import { createInquiry } from "@/app/actions/inquiryActions"
+import { inquiryFormSchema, type InquiryFormValues } from "@/lib/types/inquiryTypes"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { MapPin, Mail, Phone, Clock } from "lucide-react"
+import type React from "react"
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const form = useForm<InquiryFormValues>({
+    resolver: zodResolver(inquiryFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    },
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  const { handleSubmit, control, formState: { isSubmitting, isSubmitSuccessful }, reset } = form
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 1500)
+  const onSubmit = async (data: InquiryFormValues) => {
+    try {
+      const result = await createInquiry(data)
+      if (result.isSuccess) {
+        toast.success("Message Sent!", {
+          description: result.message || "Thank you for reaching out. We'll get back to you soon.",
+        })
+        reset()
+      } else {
+        if (result.fields) {
+          Object.entries(result.fields).forEach(([fieldName, fieldError]) => {
+            if (Array.isArray(fieldError) && fieldError.length > 0) {
+              form.setError(fieldName as keyof InquiryFormValues, { message: fieldError.join(", ") })
+            } else if (typeof fieldError === 'string') {
+              form.setError(fieldName as keyof InquiryFormValues, { message: fieldError })
+            }
+          })
+        }
+        throw new Error(result.error || "An unknown error occurred.")
+      }
+    } catch (error: any) {
+      toast.error("Submission Failed", {
+        description: error.message || "There was a problem submitting your inquiry. Please try again.",
+      })
+    }
   }
 
   return (
@@ -46,7 +78,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2">
             <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
-            {isSubmitted ? (
+            {isSubmitSuccessful && !isSubmitting ? (
               <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg
@@ -64,40 +96,36 @@ export default function ContactPage() {
                 <p className="text-muted-foreground mb-4">
                   Thank you for reaching out. We'll get back to you as soon as possible.
                 </p>
-                <Button onClick={() => setIsSubmitted(false)}>Send Another Message</Button>
+                <Button onClick={() => reset()}>Send Another Message</Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" required />
+              <Form {...form}>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField control={control} name="firstName" render={({ field }) => (
+                      <FormItem><FormLabel>First Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={control} name="lastName" render={({ field }) => (
+                      <FormItem><FormLabel>Last Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" required />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" type="tel" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" rows={5} required />
-                </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
+                  <FormField control={control} name="email" render={({ field }) => (
+                    <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={control} name="phone" render={({ field }) => (
+                    <FormItem><FormLabel>Phone (Optional)</FormLabel><FormControl><Input type="tel" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={control} name="subject" render={({ field }) => (
+                    <FormItem><FormLabel>Subject</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={control} name="message" render={({ field }) => (
+                    <FormItem><FormLabel>Message</FormLabel><FormControl><Textarea rows={5} {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </Button>
+                </form>
+              </Form>
             )}
           </div>
 

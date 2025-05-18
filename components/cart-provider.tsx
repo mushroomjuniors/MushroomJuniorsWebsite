@@ -7,7 +7,7 @@ import { createContext, useContext, useState, useEffect } from "react"
 type Product = {
   id: string; // Supabase uses string IDs (UUIDs)
   name: string;
-  price: number;
+  price?: number; // Price is now optional
   image: string;
   category?: string; // CHANGED: Made optional
   isNew?: boolean;   // CHANGED: Made optional
@@ -84,7 +84,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const totalItems = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
 
-  const subtotal = cartItems.reduce((total, item) => total + item.price * (item.quantity || 0), 0);
+  // const subtotal = cartItems.reduce((total, item) => total + item.price * (item.quantity || 0), 0);
+  // For "Enquire for price" model, numeric subtotal is not applicable for customer view.
+  // We'll set it to 0 for now to maintain type compatibility if other parts of the system expect a number.
+  // The display components (cart, checkout) will show "To be quoted" or similar.
+  const subtotal = 0;
 
   return (
     <CartContext.Provider

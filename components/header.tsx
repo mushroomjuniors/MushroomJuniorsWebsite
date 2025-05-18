@@ -31,6 +31,21 @@ const generateSlug = (name: string) => {
 };
 
 const menSubCategories = [
+  { title: "Men Party Wear" },
+  { title: "3/4 Denims" },
+  { title: "Blazers" },
+  { title: "Indo Western" },
+  { title: "Men Jackets" },
+  { title: "Men's Jeans" },
+  { title: "Men's Shirts" },
+  { title: "Men's T-Shirts" },
+  { title: "Sherwani" },
+  { title: "Suit" },
+  { title: "Tuxedos" },
+  { title: "Lowers" },
+];
+
+const womenSubCategories = [
   { title: "Dungree" },
   { title: "Ethnic" },
   { title: "Frocks" },
@@ -44,14 +59,6 @@ const menSubCategories = [
   { title: "Shorts" },
   { title: "Toppers" },
   { title: "T-Shirts" },
-];
-
-const womenSubCategories = [
-  { title: "Dresses (Placeholder)" },
-  { title: "Tops (Placeholder)" },
-  { title: "Bottoms (Placeholder)" },
-  { title: "Outerwear (Placeholder)" },
-  { title: "Accessories (Placeholder)" },
 ];
 
 export function Header() {
