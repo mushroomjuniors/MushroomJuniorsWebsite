@@ -19,7 +19,23 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 // Helper function to generate a simple slug (if not available from utils)
 const generateSlug = (name: string) => {
   if (!name) return '';
-  return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  
+  // Convert to lowercase and remove accents
+  let slug = name.toLowerCase();
+  
+  // Handle fractions like 3/4 - keep numbers together
+  slug = slug.replace(/(\d+)\/(\d+)/g, '$1$2');
+  
+  // Replace apostrophes and special chars with nothing (remove them)
+  slug = slug.replace(/['']/g, '');
+  
+  // Replace spaces and other non-alphanumeric chars with hyphens
+  slug = slug.replace(/[^a-z0-9]+/g, '-');
+  
+  // Remove leading and trailing hyphens
+  slug = slug.replace(/^-+|-+$/g, '');
+  
+  return slug;
 };
 
 // Define the shape of a category object we expect

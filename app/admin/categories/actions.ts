@@ -28,81 +28,123 @@ export type CategoryActionState = {
   fields?: Record<string, string>;
 };
 
-export async function createCategory(
-  values: z.infer<typeof CategoryActionSchema>
-): Promise<CategoryActionState> {
-  const validatedFields = CategoryActionSchema.safeParse(values);
+// Helper function to generate a slug from a name
+function generateSlug(name: string): string {
+  // Convert to lowercase and remove accents
+  let slug = name.toLowerCase();
+  
+  // Handle fractions like 3/4 - keep numbers together
+  slug = slug.replace(/(\d+)\/(\d+)/g, '$1$2');
+  
+  // Replace apostrophes and special chars with nothing (remove them)
+  slug = slug.replace(/['']/g, '');
+  
+  // Replace spaces and other non-alphanumeric chars with hyphens
+  slug = slug.replace(/[^a-z0-9]+/g, '-');
+  
+  // Remove leading and trailing hyphens
+  slug = slug.replace(/^-+|-+$/g, '');
+  
+  return slug;
+}
 
-  if (!validatedFields.success) {
-    return {
-      error: "Invalid fields.",
-      fields: validatedFields.error.flatten().fieldErrors as Record<string, string>,
-    };
-  }
+export async function createCategory(prevState: CategoryActionState, formData: FormData): Promise<CategoryActionState> {
+  // Let's destructure and prepare the data we need
+  const name = formData.get('name')?.toString().trim() || '';
+  const description = formData.get('description')?.toString().trim() || '';
+  const image_url = formData.get('image_url')?.toString().trim() || '';
 
-  const { name, description, image_url } = validatedFields.data;
-
+  // Validate the data on the server-side
   try {
-    const { error } = await supabaseAdmin
-      .from("categories")
-      .insert([{ name, description: description || null, image_url: image_url || null }])
-      .select(); // .select() can be useful if you want to return the created object
+    const validatedData = CategoryActionSchema.parse({
+      name,
+      description: description || undefined, // zod handles empty strings differently
+      image_url: image_url || undefined // zod handles empty strings differently
+    });
+
+    // Generate slug from name
+    const slug = generateSlug(name);
+
+    // Perform the insert operation
+    const { data, error } = await supabaseAdmin.from('categories').insert([
+      { 
+        name: validatedData.name, 
+        description: validatedData.description || null, 
+        image_url: validatedData.image_url || null,
+        slug: slug 
+      }
+    ]).select().single();
 
     if (error) {
-      console.error("Supabase error creating category:", error);
-      return { error: `Database Error: ${error.message}` };
+      console.error("Error creating category:", error);
+      return {
+        message: "",
+        error: `Failed to create category: ${error.message}`,
+      };
     }
 
-    revalidatePath("/admin/categories"); // Revalidate the categories list page
-    revalidatePath("/admin/categories/new"); // Revalidate the new category page (less critical here but good practice)
-    
-    return { message: `Category "${name}" created successfully.` };
-
-  } catch (e: any) {
-    console.error("Failed to create category:", e);
-    return { error: "An unexpected error occurred." };
+    revalidatePath('/admin/categories');
+    return {
+      message: `Category "${validatedData.name}" created successfully!`,
+      error: "",
+    };
+  } catch (error: any) {
+    // Catch and handle validation errors
+    console.error("Category validation error:", error);
+    return {
+      message: "",
+      error: `Failed to create category: ${error?.message || "Unknown error"}`,
+    };
   }
 }
 
-export async function updateCategory(
-  id: string,
-  values: z.infer<typeof CategoryActionSchema>
-): Promise<CategoryActionState> {
-  if (!id) {
-    return { error: "Category ID is missing." };
-  }
-
-  const validatedFields = CategoryActionSchema.safeParse(values);
-
-  if (!validatedFields.success) {
-    return {
-      error: "Invalid fields.",
-      fields: validatedFields.error.flatten().fieldErrors as Record<string, string>,
-    };
-  }
-
-  const { name, description, image_url } = validatedFields.data;
+export async function updateCategory(id: string, prevState: CategoryActionState, formData: FormData): Promise<CategoryActionState> {
+  const name = formData.get('name')?.toString().trim() || '';
+  const description = formData.get('description')?.toString().trim() || '';
+  const image_url = formData.get('image_url')?.toString().trim() || '';
 
   try {
-    const { error } = await supabaseAdmin
-      .from("categories")
-      .update({ name, description: description || null, image_url: image_url || null })
-      .eq("id", id)
-      .select(); // .select() can be useful if you want to return the updated object
+    const validatedData = CategoryActionSchema.parse({
+      name,
+      description: description || undefined,
+      image_url: image_url || undefined
+    });
+
+    // Generate slug from name
+    const slug = generateSlug(name);
+
+    const { data, error } = await supabaseAdmin
+      .from('categories')
+      .update({ 
+        name: validatedData.name, 
+        description: validatedData.description || null,
+        image_url: validatedData.image_url || null,
+        slug: slug 
+      })
+      .eq('id', id)
+      .select()
+      .single();
 
     if (error) {
-      console.error("Supabase error updating category:", error);
-      return { error: `Database Error: ${error.message}` };
+      console.error("Error updating category:", error);
+      return {
+        message: "",
+        error: `Failed to update category: ${error.message}`,
+      };
     }
 
-    revalidatePath("/admin/categories"); // Revalidate the categories list page
-    revalidatePath(`/admin/categories/edit/${id}`); // Revalidate the current edit page
-    
-    return { message: `Category "${name}" updated successfully.` };
-
-  } catch (e: any) {
-    console.error("Failed to update category:", e);
-    return { error: "An unexpected error occurred while updating." };
+    revalidatePath('/admin/categories');
+    revalidatePath(`/admin/categories/edit/${id}`);
+    return {
+      message: `Category "${validatedData.name}" updated successfully!`,
+      error: "",
+    };
+  } catch (error: any) {
+    console.error("Category update validation error:", error);
+    return {
+      message: "",
+      error: `Failed to update category: ${error?.message || "Unknown error"}`,
+    };
   }
 }
 

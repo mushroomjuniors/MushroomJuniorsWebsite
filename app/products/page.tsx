@@ -4,13 +4,38 @@ import { ProductDisplayClient } from "@/components/product-display-client";
 
 async function getCategoryIdByName(categoryName: string): Promise<string | null> {
   if (!categoryName) return null;
+  
+  // First try direct slug match if you have a slug column
+  const { data: slugData, error: slugError } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('slug', categoryName)
+    .maybeSingle();
+    
+  if (slugData?.id) {
+    return slugData.id;
+  }
+  
+  // Fallback to name-based matching
   const formattedName = categoryName.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); 
 
+  // Try exact match first
+  const { data: exactData, error: exactError } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('name', formattedName)
+    .maybeSingle();
+    
+  if (exactData?.id) {
+    return exactData.id;
+  }
+  
+  // Try ILIKE as last resort
   const { data, error } = await supabase
     .from('categories')
     .select('id')
-    .ilike('name', `%${formattedName}%`) 
-    .single();
+    .ilike('name', formattedName)
+    .maybeSingle();
 
   if (error || !data) {
     console.warn(`Category ID not found for name derived from slug: ${categoryName}`, error?.message);
@@ -84,6 +109,14 @@ async function getProducts({
   }));
 }
 
+// Helper function to convert slug back to a readable title
+function slugToTitle(slug: string): string {
+  return slug
+    .split('-') 
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export default async function ProductsPage({
   searchParams,
 }: {
@@ -101,8 +134,9 @@ export default async function ProductsPage({
     maxPrice,
   });
 
+  // Use our utility function for consistent title formatting
   const pageTitle = categorySlug 
-    ? `${categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Products` 
+    ? `${slugToTitle(categorySlug)} Products` 
     : "All Products";
 
   return (

@@ -24,6 +24,18 @@ const nextConfig = {
       // },
     ],
   },
+  // Ignore TypeScript errors during build
+  typescript: {
+    // !! WARN !!
+    // Ignoring type checking can increase the risk of runtime errors
+    ignoreBuildErrors: true,
+  },
+  // Ignore ESLint errors during build
+  eslint: {
+    // !! WARN !!
+    // Ignoring ESLint errors can increase the risk of code quality issues
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;

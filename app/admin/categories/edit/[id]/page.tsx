@@ -19,7 +19,13 @@ async function getCategory(id: string): Promise<Category | null> {
   return data as Category | null;
 }
 
-export default async function EditCategoryPage({ params }: { params: { id: string } }) {
+export default async function EditCategoryPage({ 
+  params,
+  searchParams 
+}: {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   if (!params.id) {
     notFound(); // Should not happen with a valid route structure, but good practice
   }
@@ -31,9 +37,11 @@ export default async function EditCategoryPage({ params }: { params: { id: strin
 
   // We need to ensure the initialData in CategoryForm matches CategoryFormValues expectation
   // Specifically, description can be null from DB but form expects string | undefined
+  // And image_url can be null from DB but form expects string | undefined
   const formInitialData = {
     ...category,
     description: category.description || undefined,
+    image_url: category.image_url || undefined, // Ensure null is converted to undefined
   };
 
   return (

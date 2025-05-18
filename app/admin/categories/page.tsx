@@ -35,6 +35,7 @@ export interface Category {
   description: string | null;
   created_at: string;
   image_url: string | null;
+  slug?: string; // Add slug field
 }
 
 async function getCategories(): Promise<Category[]> {
