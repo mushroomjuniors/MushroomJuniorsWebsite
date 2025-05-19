@@ -29,7 +29,7 @@ const SIZES = ["XS", "S", "M", "L", "XL", "XXL"]; // Define available sizes
 
 export default function StorePage() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [showNewArrivals, setShowNewArrivals] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -109,7 +109,7 @@ export default function StorePage() {
           size="sm"
           className="mb-4"
           onClick={() => {
-            setPriceRange([0, 100])
+            setPriceRange([0, 10000])
             setSelectedCategories([])
             setShowNewArrivals(false)
             setSelectedSizes([])
@@ -161,16 +161,16 @@ export default function StorePage() {
         </div>
         <div className="px-2">
           <Slider
-            defaultValue={[0, 100]}
-            max={100}
+            defaultValue={[0, 10000]}
+            max={10000}
             step={1}
             value={priceRange}
             onValueChange={setPriceRange}
             className="my-6"
           />
           <div className="flex items-center justify-between">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}</span>
+            <span>{priceRange[0]}</span>
+            <span>{priceRange[1]}</span>
           </div>
         </div>
       </div>

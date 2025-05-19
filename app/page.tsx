@@ -15,26 +15,26 @@ import FashionCollection from "@/components/fashion-collection"
 const womenCollection = {
   title: "Women's Collection",
   description:
-    "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA CONSEQUAT EGESTAS NISI. VESTIBULUM MALESUADA FERMENTUM NIBH. DONEC VENENATIS, NEQUE ET PELLENTESQUE EFFICITUR, LECTUS EST PRETI.",
+    "Indulge in comfort and quality with our thoughtfully designed women's collection.",
   backgroundImage: "/images/woman-bg.png",
   products: [
     {
       id: "1",
-      name: "CLASSIC SHADES",
+      name: "Midis",
       price: 99.0,
-      image: "/images/classic-shades.webp",
+      image: "/images/midis.webp",
     },
     {
       id: "2",
-      name: "CLASSIC BACKPACK",
+      name: "Gowns",
       price: 39.0,
-      image: "/images/classic-shades.webp",
+      image: "/images/gowns.jpg",
     },
     {
       id: "3",
-      name: "SHIELD SHADES",
+      name: "Ethnic Wear",
       price: 89.0,
-      image: "/images/product-shield.webp",
+      image: "/images/ethnic.webp",
     },
   ],
 }
@@ -42,26 +42,26 @@ const womenCollection = {
 const menCollection = {
   title: "Men's Collection",
   description:
-    "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA CONSEQUAT EGESTAS NISI. VESTIBULUM MALESUADA FERMENTUM NIBH. DONEC VENENATIS, NEQUE ET PELLENTESQUE EFFICITUR, LECTUS EST PRETI.",
+    "Define your style with our latest men's collection. Designed for the confident man, these pieces blend contemporary design with classic appeal.",
   backgroundImage: "/images/men-bg.webp",
   products: [
     {
-      id: "4",
-      name: "CLASSIC LOAFER",
-      price: 40.0,
-      image: "/images/satchel.webp",
+      id: "1",
+      name: "Tuxedos",
+      price: 99.0,
+      image: "/images/tuxedos.webp",
     },
     {
-      id: "5",
-      name: "VINTAGE BOX",
-      price: 49.0,
-      image: "/images/vintage box.webp",
+      id: "2",
+      name: "Men's Party Wear",
+      price: 39.0,
+      image: "/images/men-party-wear.jpg",
     },
     {
-      id: "6",
-      name: "SHIELD GLASSES",
+      id: "3",
+      name: "Jodhpuri",
       price: 89.0,
-      image: "/images/product-shield.webp",
+      image: "/images/jodhpuri.webp",
     },
   ],
 }
@@ -80,16 +80,17 @@ async function getCategoriesForCategorySection(): Promise<any[]> { // Using any 
   return data || [];
 }
 
-// Existing function to get featured products if you're keeping that section
-async function getFeaturedProductsData(): Promise<Product[]> { 
+// Updated function to get TRENDING products
+async function getTrendingProductsData(): Promise<Product[]> { 
   const { data, error } = await supabase
     .from('products')
-    .select('id, name, price, image_url, image_urls, created_at') 
+    .select('id, name, price, image_url, image_urls, created_at, is_trending') 
+    .eq('is_trending', true) // Fetch only trending products
     .order('created_at', { ascending: false }) 
-    .limit(5); // Featured products limit
+    .limit(10); // You might want to adjust the limit for trending products
 
   if (error) {
-    console.error('Error fetching featured products:', error.message);
+    console.error('Error fetching trending products:', error.message);
     return [];
   }
   return (data || []).map(product => ({
@@ -99,12 +100,13 @@ async function getFeaturedProductsData(): Promise<Product[]> {
     image_url: product.image_url || null, 
     image_urls: product.image_urls || null, 
     isNew: new Date(product.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    // is_trending: product.is_trending, // This can be passed if ProductCard uses it
   }));
 }
 
 export default async function Home() { 
   const categoriesForOldSection = await getCategoriesForCategorySection();
-  const featuredProductsData = await getFeaturedProductsData();
+  const trendingProductsData = await getTrendingProductsData();
 
  
 
@@ -112,7 +114,7 @@ export default async function Home() {
     <div className="flex flex-col min-h-screen">
       <HeroSection />
       <ScrollTicker />
-      {featuredProductsData.length > 0 && <FeaturedProducts products={featuredProductsData} />}
+      {trendingProductsData.length > 0 && <FeaturedProducts products={trendingProductsData} />}
 
 
       <FashionCollection
@@ -121,7 +123,7 @@ export default async function Home() {
       />
       <div className="container px-4 py-12 mx-auto space-y-16">
         {categoriesForOldSection.length > 0 && <CategorySection categories={categoriesForOldSection} />}
-        {featuredProductsData.length > 0 && <FeaturedProducts products={featuredProductsData} />}
+        {trendingProductsData.length > 0 && <FeaturedProducts products={trendingProductsData} />}
         
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Ready to upgrade your style?</h2>
@@ -129,7 +131,7 @@ export default async function Home() {
             Discover our latest collections and find your perfect fit.
           </p>
           <Button asChild size="lg" className="bg-gray-900 hover:bg-gray-700 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black">
-            <Link href="/products">
+            <Link href="/store">
               <ShoppingBag className="w-4 h-4 mr-2" />
               Shop All Products
             </Link>

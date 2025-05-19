@@ -47,6 +47,7 @@ const productFormSchema = z.object({
   // image_urls is for the array of Cloudinary URLs for the gallery
   image_urls: z.array(z.string().url("Invalid URL for gallery image. Should be a Cloudinary URL after upload.")).optional(),
   sizes: z.array(z.enum(["XS", "S", "M", "L", "XL", "XXL", "XXXL"])).optional(),
+  is_trending: z.boolean().default(false).optional(),
 });
 
 export const availableSizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] as const;
@@ -55,7 +56,7 @@ export type ProductFormValues = z.infer<typeof productFormSchema>;
 
 interface ProductFormProps {
   // Ensure image_urls and image_url (if it can be null from DB) are correctly typed for initialData
-  initialData?: Partial<ProductFormValues> & { id?: string; image_url?: string | null; image_urls?: string[] | null }; 
+  initialData?: Partial<ProductFormValues> & { id?: string; image_url?: string | null; image_urls?: string[] | null; is_trending?: boolean | null }; 
   categories: ProductCategory[];
 }
 
@@ -78,6 +79,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
       image_url: initialData?.image_url || "", // Will be Cloudinary URL
       image_urls: initialData?.image_urls || [], // Will be Cloudinary URLs
       sizes: initialData?.sizes || [],
+      is_trending: initialData?.is_trending || false,
     },
     mode: "onChange",
   });
@@ -258,6 +260,28 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         <FormField control={form.control} name="sizes" render={({ field }) => (
             <FormItem><FormLabel>Available Sizes</FormLabel><FormDescription>Select all sizes that apply.</FormDescription><div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">{availableSizes.map((size) => (<FormItem key={size} className="flex flex-row items-center space-x-2 rounded-md border p-3 hover:bg-accent hover:text-accent-foreground"><FormControl><Checkbox id={`size-${size}`} checked={field.value?.includes(size)} onCheckedChange={(checked) => {const currentSizes = field.value || []; if (checked) {field.onChange([...currentSizes, size]);} else {field.onChange(currentSizes.filter((s) => s !== size));}}}/></FormControl><FormLabel htmlFor={`size-${size}`} className="font-normal cursor-pointer flex-1">{size}</FormLabel></FormItem>))}</div><FormMessage /></FormItem>
         )} />
+
+        {/* Is Trending Checkbox */}
+        <FormField
+          control={form.control}
+          name="is_trending"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Mark as Trending</FormLabel>
+                <FormDescription>
+                  Trending products will be highlighted in special sections of the store.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" disabled={form.formState.isSubmitting || isUploading} className="w-full md:w-auto">
           {isUploading ? "Uploading..." : (form.formState.isSubmitting 

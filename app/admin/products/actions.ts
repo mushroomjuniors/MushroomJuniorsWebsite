@@ -23,6 +23,7 @@ const ProductActionSchema = z.object({
   image_url: z.string().url({ message: "Please enter a valid primary image URL." }).optional().or(z.literal('')), 
   image_urls: z.array(z.string().url({ message: "Invalid URL in gallery images." })).optional(), // For the gallery images array
   sizes: z.array(z.string()).optional(), // Array of selected sizes
+  is_trending: z.boolean().default(false).optional(), // Added is_trending
 });
 
 export type ProductActionState = {
@@ -49,6 +50,7 @@ export async function createProduct(
     image_url: validatedFields.data.image_url || null, // Store null if empty string
     image_urls: validatedFields.data.image_urls || [], // Default to empty array
     sizes: validatedFields.data.sizes || [], // Ensure sizes is at least an empty array
+    is_trending: validatedFields.data.is_trending || false, // Handle is_trending
   };
 
   try {
@@ -91,6 +93,7 @@ export async function updateProduct(
     image_url: validatedFields.data.image_url || null, // Store null if empty string
     image_urls: validatedFields.data.image_urls || [], // Default to empty array
     sizes: validatedFields.data.sizes || [], // Ensure sizes is at least an empty array
+    is_trending: validatedFields.data.is_trending || false, // Handle is_trending
   };
 
   try {

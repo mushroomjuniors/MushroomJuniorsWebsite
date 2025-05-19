@@ -61,7 +61,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
             <Plus className="w-6 h-6 mr-4" />
             <div>
               <h2 className="text-3xl lg:text-5xl font-light tracking-tight">Top Picks</h2>
-              <p className="text-sm text-gray-400 mt-4">2023 - 2024 COLLECTION</p>
+              <p className="text-sm text-gray-400 mt-4">2025 COLLECTION</p>
             </div>
           </div>
 
@@ -75,16 +75,15 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                    <button className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3">
-                      <span>QUICK SHOP</span>
+                  <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                    <button className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3  rounded-md">
+                      <span>VIEW PRODUCTS</span>
                       <ShoppingCart className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
                 <div className="p-4 bg-zinc-900">
                   <h3 className="text-sm uppercase tracking-wide">{product.name}</h3>
-                  <p className="text-sm">${product.price.toFixed(2)}</p>
                 </div>
               </div>
             ))}
@@ -129,7 +128,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
             <Plus className="w-6 h-6 mr-4" />
             <div>
               <h2 className="text-3xl lg:text-5xl font-light tracking-tight">Top Picks</h2>
-              <p className="text-sm text-gray-400 mt-4">2023 - 2024 COLLECTION</p>
+              <p className="text-sm text-gray-400 mt-4">2025 COLLECTION</p>
             </div>
           </div>
 
@@ -143,9 +142,9 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                    <button className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3">
-                      <span>QUICK SHOP</span>
+                  <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                    <button className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3  rounded-md">
+                      <span>VIEW PRODUCTS</span>
                       <ShoppingCart className="w-5 h-5" />
                     </button>
                   </div>

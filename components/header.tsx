@@ -97,7 +97,7 @@ export function Header() {
 
   const textColor = "text-white" // Always white as background is transparent or black
   const iconColor = "text-white" // Always white
-  const navLinkHoverBg = "hover:bg-gray-800 focus:bg-gray-800 data-[active]:bg-gray-800"
+  const navLinkHoverBg = "hover:bg-gray-200/40 focus:bg-gray-200/40 data-[active]:bg-gray-200/40"
 
   return (
     <header className={headerClasses}>

@@ -17,9 +17,9 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
       <section className="py-12 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center space-y-3">
-            <h2 className="text-3xl font-bold tracking-tight">Featured Products</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Trending Products</h2>
             <p className="text-muted-foreground max-w-[600px]">
-              No featured products available at the moment.
+              No trending products available at the moment.
             </p>
           </div>
         </div>
@@ -31,18 +31,28 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
     <section className="py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center text-center space-y-3 mb-8">
-          <h2 className="text-3xl font-bold tracking-tight">Featured Products</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Trending Products</h2>
           <p className="text-muted-foreground max-w-[600px]">
-            Our most popular items, handpicked for you
+            Check out what's hot right now!
           </p>
         </div>
-        {/* Adjusted grid for slightly larger cards than previous step */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+        {/* Horizontal scrollable for all views */}
+        <div className="flex overflow-x-auto gap-4 sm:gap-5 pb-4 snap-x snap-mandatory scrollbar-hide">
           {products.map((product) => (
-            // Use the imported ProductCard component
-            <ProductCard key={product.id} product={product} />
+            <div key={product.id} className="min-w-[80%] sm:min-w-[45%] md:min-w-[30%] lg:min-w-[23%] xl:min-w-[18%] snap-start">
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
+        <style jsx>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+          }
+        `}</style>
       </div>
     </section>
   );
