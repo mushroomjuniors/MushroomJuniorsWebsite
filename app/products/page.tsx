@@ -63,6 +63,7 @@ async function getProducts({
     name,
     price,
     image_url,
+    image_urls,
     created_at, 
     category_id,
     categories ( name ) 
@@ -105,6 +106,7 @@ async function getProducts({
     name: item.name,
     price: item.price,
     image_url: item.image_url,
+    image_urls: item.image_urls,
     isNew: new Date(item.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), 
   }));
 }

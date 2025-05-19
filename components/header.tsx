@@ -80,8 +80,10 @@ export function Header() {
 
     if (isHomePage) {
       window.addEventListener("scroll", handleScroll)
+      // Set initial scrolled state for homepage based on current scroll position
+      handleScroll(); 
     } else {
-      setScrolled(true)
+      setScrolled(true) // Non-home pages always have the "scrolled" look
     }
 
     return () => {
@@ -90,11 +92,12 @@ export function Header() {
   }, [isHomePage])
 
   const headerClasses = isHomePage
-    ? `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white border-b" : "bg-transparent"}`
-    : "sticky top-0 z-50 w-full border-b bg-background"
+    ? `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black border-b border-gray-800" : "bg-transparent"}`
+    : "sticky top-0 z-50 w-full border-b border-gray-800 bg-black"
 
-  const textColor = isHomePage && !scrolled ? "text-white" : "text-foreground"
-  const iconColor = isHomePage && !scrolled ? "text-white" : "text-foreground"
+  const textColor = "text-white" // Always white as background is transparent or black
+  const iconColor = "text-white" // Always white
+  const navLinkHoverBg = "hover:bg-gray-800 focus:bg-gray-800 data-[active]:bg-gray-800"
 
   return (
     <header className={headerClasses}>
@@ -179,14 +182,14 @@ export function Header() {
           <NavigationMenuList>
             <NavigationMenuItem>
               <Link href="/" legacyBehavior passHref>
-                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent ${navLinkHoverBg}`}>
                   Home
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/store" legacyBehavior passHref>
-                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent ${navLinkHoverBg}`}>
                   All Products
                 </NavigationMenuLink>
               </Link>
@@ -194,11 +197,11 @@ export function Header() {
             
             {/* Men Dropdown */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className={`${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50 font-medium`}>
+              <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
                 Men
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px]">
                   {menSubCategories.map((subCategory) => {
                     const categorySlug = generateSlug(subCategory.title);
                     return (
@@ -220,11 +223,11 @@ export function Header() {
 
             {/* Women Dropdown Placeholder */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className={`${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50 font-medium`}>
+              <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
                 Women
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px]">
                   {womenSubCategories.map((subCategory) => {
                     const categorySlug = generateSlug(subCategory.title);
                     return (
@@ -246,14 +249,14 @@ export function Header() {
 
             <NavigationMenuItem>
               <Link href="/about" legacyBehavior passHref>
-                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent ${navLinkHoverBg}`}>
                   About
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/contact" legacyBehavior passHref>
-                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50`}>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${textColor} bg-transparent ${navLinkHoverBg}`}>
                   Contact
                 </NavigationMenuLink>
               </Link>
