@@ -66,16 +66,35 @@ export function RandomProducts({
   return (
     <section className="py-12 border-t">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center text-center space-y-3 mb-8">
-          <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
-          <p className="text-muted-foreground max-w-[600px]">Discover more products you might love</p>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+        {title && (
+          <div className="flex flex-col items-center text-center space-y-3 mb-8">
+            <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
+            <p className="text-muted-foreground max-w-[600px]">Discover more products you might love</p>
+          </div>
+        )}
+        {/* Desktop view - grid */}
+        <div className="hidden md:grid md:grid-cols-4 gap-6">
           {randomProducts.map((product) => (
-            // Use the imported ProductCard
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
+        {/* Mobile view - horizontal scrollable */}
+        <div className="md:hidden flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide">
+          {randomProducts.map((product) => (
+            <div key={product.id} className="min-w-[85%] snap-start">
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+        <style jsx>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+          }
+        `}</style>
       </div>
     </section>
   );

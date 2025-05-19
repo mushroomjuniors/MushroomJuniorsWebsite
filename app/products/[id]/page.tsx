@@ -11,10 +11,8 @@ interface SupabaseProduct {
   image_url: string | null;    // Main image (assuming single URL)
   image_urls: string[] | null; // Array of URLs for gallery
   sizes: string[] | null;
-  // colors column does not exist
-  // details column does not exist
   created_at: string;
-  // category_id: string | null; // If you want to fetch category name
+  // Note: stock and features columns don't exist in the database
 }
 
 async function getProductById(id: string): Promise<ProductType | null> {
@@ -59,6 +57,17 @@ async function getProductById(id: string): Promise<ProductType | null> {
     finalImageUrls = [productData.image_url];
   }
 
+  // Default product details if not provided in database
+  const details = {
+    material: "Cotton 100%",
+    fit: "Regular",
+    care: "Machine wash, no ironing, don't dry clean, don't tumble dry",
+    origin: "Ethically made in Portugal",
+  };
+
+  // Generate a random number of viewers between 10-50 for demo purposes
+  const viewers = Math.floor(Math.random() * 40) + 10;
+  
   return {
     id: productData.id,
     name: productData.name,
@@ -68,13 +77,24 @@ async function getProductById(id: string): Promise<ProductType | null> {
     image_urls: finalImageUrls,
     sizes: productData.sizes,
     colors: null, // Set to null as colors column does not exist
-    details: null, // Set to null as details column does not exist
+    details: details, // Default details
     isNew,
+    stock: 450, // Default stock value (column doesn't exist in DB)
+    viewers: viewers, // Random viewers
+    reviews: 0, // No reviews yet
+    features: [
+      "High quality material",
+      "Comfortable fit", 
+      "Durable construction",
+      "Stylish design"
+    ], // Default features (column doesn't exist in DB)
+    modelInfo: "Model is 1.84 m wearing size M"
   };
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+  // Properly await params in Next.js
+  const { id } = await params;
 
   if (!id) {
     notFound(); 

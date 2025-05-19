@@ -29,7 +29,7 @@ const SIZES = ["XS", "S", "M", "L", "XL", "XXL"]; // Define available sizes
 
 export default function StorePage() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [showNewArrivals, setShowNewArrivals] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
