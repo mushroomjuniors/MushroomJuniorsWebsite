@@ -88,17 +88,17 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card
-      className="py-0 group/card relative rounded-lg overflow-visible border-none transition-all duration-300 ease-in-out"
+      className="py-0 group/card relative rounded-2xl overflow-visible border-none transition-all duration-300 ease-in-out"
       onMouseEnter={() => setIsCardHovered(true)}
       onMouseLeave={() => setIsCardHovered(false)}
     >
       <div
-        className="absolute inset-0 rounded-lg bg-white shadow-xl transition-opacity duration-300 ease-in-out z-0"
+        className="absolute inset-0 rounded-2xl bg-white shadow-xl transition-opacity duration-300 ease-in-out z-0"
         style={{
           opacity: isCardHovered ? 1 : 0,
         }}
       />
-      <div className="relative z-[1] flex flex-col h-full p-3 bg-card group-hover/card:scale-110 group-hover/card:bg-gray-50 dark:group-hover/card:bg-gray-800 transition-all duration-300 ease-in-out rounded-lg">
+      <div className="relative z-[1] flex flex-col h-full p-3 bg-card group-hover/card:scale-110 group-hover/card:bg-gray-50 dark:group-hover/card:bg-gray-800 transition-all duration-300 ease-in-out rounded-2xl">
         <div className="relative aspect-square w-full overflow-hidden group/image">
           <Link href={`/products/${product.id}`} passHref className="block absolute inset-0">
             <Image
@@ -106,7 +106,7 @@ export function ProductCard({ product }: ProductCardProps) {
               alt={`${product.name} - primary`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className={`object-cover transition-opacity duration-500 ease-in-out ${
+              className={`object-cover rounded-2xl transition-opacity duration-500 ease-in-out ${
                 isCardHovered && secondaryImageUrl !== primaryImageUrl ? 'opacity-0' : 'opacity-100'
               }`}
               priority={false}
@@ -117,7 +117,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 alt={`${product.name} - secondary`}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className={`object-cover transition-opacity duration-500 ease-in-out ${
+                className={`object-cover rounded-2xl transition-opacity duration-500 ease-in-out ${
                   isCardHovered ? 'opacity-100' : 'opacity-0'
                 }`}
                 priority={false}

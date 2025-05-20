@@ -1,5 +1,6 @@
 "use client"
-
+import * as React from "react"
+import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
@@ -44,7 +45,31 @@ const menSubCategories = [
   { title: "Tuxedos" },
   { title: "Lowers" },
 ];
-
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
 const womenSubCategories = [
   { title: "Dungree" },
   { title: "Ethnic" },
@@ -81,7 +106,7 @@ export function Header() {
     if (isHomePage) {
       window.addEventListener("scroll", handleScroll)
       // Set initial scrolled state for homepage based on current scroll position
-      handleScroll(); 
+      handleScroll();
     } else {
       setScrolled(true) // Non-home pages always have the "scrolled" look
     }
@@ -97,7 +122,7 @@ export function Header() {
 
   const textColor = "text-white" // Always white as background is transparent or black
   const iconColor = "text-white" // Always white
-  const navLinkHoverBg = "hover:bg-gray-200/40 focus:bg-gray-200/40 data-[active]:bg-gray-200/40"
+  const navLinkHoverBg = "hover:bg-gray-200/40 hover:text-white focus:bg-gray-200/40 focus:text-white data-[active]:bg-gray-200/40 data-[active]:text-white"
 
   return (
     <header className={headerClasses}>
@@ -194,30 +219,57 @@ export function Header() {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            
+
             {/* Men Dropdown */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
                 Men
               </NavigationMenuTrigger>
+
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px]">
-                  {menSubCategories.map((subCategory) => {
-                    const categorySlug = generateSlug(subCategory.title);
-                    return (
-                      <li key={subCategory.title}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={`/products?category=${categorySlug}`}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            <div className="text-sm font-medium leading-none">{subCategory.title}</div>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <div className="flex gap-4 p-4 md:w-[500px] lg:w-[700px]">
+                  {/* Left: Collection Card */}
+                  <div className="relative flex flex-col justify-end rounded-md overflow-hidden min-w-[180px] max-w-[220px] w-full h-[220px]">
+                    <a
+                      className="absolute inset-0"
+                      href="/"
+                      style={{
+                        backgroundImage: "url('/images/men-bg.webp')",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center"
+                      }}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="relative z-10 p-6">
+                      <div className="mb-2 mt-2 text-lg font-medium text-white">
+                        Boys Collection
+                      </div>
+                      <p className="text-sm leading-tight text-white/90">
+                        Curated collection of boys wear
+                      </p>
+                    </div>
+                  </div>
+                  {/* Right: Subcategories */}
+                  <ul className="grid grid-cols-3 gap-3 flex-1">
+                    {menSubCategories.map((subCategory) => {
+                      const categorySlug = generateSlug(subCategory.title);
+                      return (
+                        <li key={subCategory.title}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              href={`/products?category=${categorySlug}`}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                            >
+                              <div className="text-sm font-medium leading-none">{subCategory.title}</div>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
@@ -227,23 +279,49 @@ export function Header() {
                 Women
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px]">
-                  {womenSubCategories.map((subCategory) => {
-                    const categorySlug = generateSlug(subCategory.title);
-                    return (
-                      <li key={subCategory.title}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={`/products?category=${categorySlug}`}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            <div className="text-sm font-medium leading-none">{subCategory.title}</div>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <div className="flex gap-4 p-4 md:w-[500px] lg:w-[700px]">
+                  {/* Left: Collection Card */}
+                  <div className="relative flex flex-col justify-end rounded-md overflow-hidden min-w-[180px] max-w-[220px] w-full ">
+                    <a
+                      className="absolute inset-0"
+                      href="/"
+                      style={{
+                        backgroundImage: "url('/images/woman-bg.png')",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center"
+                      }}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="relative z-10 p-6">
+                      <div className="mb-2 mt-2 text-lg font-medium text-white">
+                        Girls Collection
+                      </div>
+                      <p className="text-sm leading-tight text-white/90">
+                        Curated collection of girls wear
+                      </p>
+                    </div>
+                  </div>
+                  {/* Right: Subcategories */}
+                  <ul className="grid grid-cols-3 gap-3 flex-1">
+                    {womenSubCategories.map((subCategory) => {
+                      const categorySlug = generateSlug(subCategory.title);
+                      return (
+                        <li key={subCategory.title}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              href={`/products?category=${categorySlug}`}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                            >
+                              <div className="text-sm font-medium leading-none">{subCategory.title}</div>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
 

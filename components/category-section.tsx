@@ -38,6 +38,15 @@ const generateSlug = (name: string) => {
   return slug;
 };
 
+// Helper to chunk array into groups of 8
+function chunkArray(array: any[], size: number) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
+
 // Define the shape of a category object we expect
 interface Category {
   id: string;
@@ -67,6 +76,9 @@ export function CategorySection({ categories, title = "Season Collection" }: Cat
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
+
+  // Chunk categories into groups of 8 for carousel pages
+  const chunkedCategories = chunkArray(categories, 8);
 
   if (!categories || categories.length === 0) {
     // Optionally render a message or nothing if no categories are provided
@@ -100,47 +112,49 @@ export function CategorySection({ categories, title = "Season Collection" }: Cat
         </div>
 
         <Carousel setApi={setApi} className="w-full">
-          <CarouselContent className="-ml-4">
-            {categories.map((category, index) => {
-              const categorySlug = generateSlug(category.name);
-              // Use category.image_url if available, otherwise a placeholder with text
-              const imageUrl = category.image_url 
-                ? category.image_url 
-                : `/placeholder.svg?height=400&width=300&text=${encodeURIComponent(category.name)}`; // Placeholder dimensions
-
-              return (
-                <CarouselItem key={category.id} className="pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <Link href={`/products?category=${categorySlug}`} className="block group">
-                    <Card className="py-0 overflow-hidden h-full flex flex-col">
-                      <CardContent className="p-0 relative aspect-[4/5] w-full flex-grow">
-                        <NextImage
-                          src={imageUrl}
-                          alt={category.name}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        />
-                        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/70 via-black/50 to-transparent pointer-events-none" />
-                        <div className="absolute inset-x-0 bottom-0 p-4 flex justify-between items-end">
-                          <div>
-                            <h3 className="text-lg font-semibold text-white leading-tight">
-                              {category.name}
-                            </h3>
-                            <p className="text-xs text-white/80">
-                              {category.itemCount !== undefined ? `${category.itemCount} items` : `Explore`}
-                            </p>
-                          </div>
-                          <Button variant="outline" size="icon" className="h-8 w-8 bg-white/20 hover:bg-white/30 border-white/30 text-white rounded-full backdrop-blur-sm flex-shrink-0">
-                            <ArrowRight className="h-4 w-4" />
-                            <span className="sr-only">View {category.name}</span>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </CarouselItem>
-              );
-            })}
+          <CarouselContent>
+            {chunkedCategories.map((group, pageIndex) => (
+              <CarouselItem key={pageIndex}>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:grid-rows-2">
+                  {group.map((category) => {
+                    const categorySlug = generateSlug(category.name);
+                    const imageUrl = category.image_url 
+                      ? category.image_url 
+                      : `/placeholder.svg?height=400&width=300&text=${encodeURIComponent(category.name)}`;
+                    return (
+                      <Link href={`/products?category=${categorySlug}`} className="block group" key={category.id}>
+                        <Card className="py-0 overflow-hidden h-full flex flex-col">
+                          <CardContent className="p-0 relative aspect-[4/5] w-full flex-grow">
+                            <NextImage
+                              src={imageUrl}
+                              alt={category.name}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            />
+                            <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/70 via-black/50 to-transparent pointer-events-none" />
+                            <div className="absolute inset-x-0 bottom-0 p-4 flex justify-between items-end">
+                              <div>
+                                <h3 className="text-lg font-semibold text-white leading-tight">
+                                  {category.name}
+                                </h3>
+                                <p className="text-xs text-white/80">
+                                  {category.itemCount !== undefined ? `${category.itemCount} items` : `Explore`}
+                                </p>
+                              </div>
+                              <Button variant="outline" size="icon" className="h-8 w-8 bg-white/20 hover:bg-white/30 border-white/30 text-white rounded-full backdrop-blur-sm flex-shrink-0">
+                                <ArrowRight className="h-4 w-4" />
+                                <span className="sr-only">View {category.name}</span>
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </CarouselItem>
+            ))}
           </CarouselContent>
           {/* Optional: Use CarouselPrevious/CarouselNext if preferred over custom buttons above */}
           {/* <CarouselPrevious /> */}
