@@ -84,7 +84,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
 
   const handleEnquireNow = () => {
     handleAddToCart();
-    window.location.href = "/inquire";
+    window.location.href = "/cart";
   };
 
   // Get the currently selected image
@@ -381,13 +381,13 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
                     </ul>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <h3 className="font-medium mb-3">Composition</h3>
                     <p>{material}</p>
 
                     <h3 className="font-medium mt-6 mb-3">Wearing</h3>
                     <p>{modelInfo}</p>
-                  </div>
+                  </div> */}
 
                   <div className="sm:col-span-2 lg:col-span-1">
                     <h3 className="font-medium mb-3">Washing Instructions</h3>

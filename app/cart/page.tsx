@@ -2,14 +2,41 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Minus, Plus, ShoppingBag, Trash } from "lucide-react"
+import { Minus, Plus, ShoppingBag, Trash, MessageSquare } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/components/cart-provider"
+import { toast } from "sonner"
 
 export default function CartPage() {
   const { cartItems, removeFromCart, updateQuantity, subtotal, clearCart } = useCart()
+  const WHATSAPP_PHONE_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER;
+
+  const handleWhatsAppInquiry = () => {
+    if (!WHATSAPP_PHONE_NUMBER) {
+      toast.error("WhatsApp number not configured.", {
+        description: "The WhatsApp contact number has not been set up correctly.",
+      });
+      return;
+    }
+    if (cartItems.length === 0) {
+      toast.info("Your cart is empty", {
+        description: "Add items to your cart to inquire on WhatsApp.",
+      });
+      return;
+    }
+    let message = "I would like to enquire the price of the following products:\n\n";
+    cartItems.forEach(item => {
+      const productLink = `${window.location.origin}/products/${item.id}`;
+      message += `Product Name: ${item.name}\n`;
+      message += `Product ID: ${item.id}\n`;
+      message += `Product Link: ${productLink}\n\n`;
+    });
+    const encodedMessage = encodeURIComponent(message.trim());
+    const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedMessage}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -137,8 +164,13 @@ export default function CartPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button asChild className="w-full bg-red-600 hover:bg-red-700">
-                <Link href="/inquire">Inquire Now</Link>
+              <Button
+                className="w-full bg-red-600 hover:bg-red-700 flex items-center gap-2"
+                onClick={handleWhatsAppInquiry}
+                disabled={cartItems.length === 0}
+              >
+                <MessageSquare className="h-5 w-5 mr-2" />
+                Inquire on WhatsApp
               </Button>
             </CardFooter>
           </Card>

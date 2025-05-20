@@ -119,7 +119,7 @@ export default function StorePage() {
         </Button>
       </div>
 
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h4 className="font-medium">Categories</h4>
           <ChevronDown className="h-4 w-4" />
@@ -150,7 +150,7 @@ export default function StorePage() {
             <Label htmlFor="category-accessories">Accessories</Label>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <Separator />
 
