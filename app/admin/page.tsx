@@ -71,7 +71,7 @@ export default async function AdminDashboard() {
       const { count: catCount, error: catError } = await supabaseAdminClient
         .from('categories')
         .select('*', { count: 'exact', head: true });
-      
+
       if (catError) throw catError;
       categoryCount = catCount || 0;
 
@@ -116,7 +116,8 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{inquiryCount}</div>
-            <Link href="/admin/inquiries" className="text-xs text-muted-foreground hover:underline">
+            <Link href="/admin/inquiries" className="text-base font-semibold text-black hover:underline hover:text-black/80 transition-colors duration-150"
+            >
               View all inquiries
             </Link>
           </CardContent>
@@ -130,7 +131,10 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{categoryCount}</div>
-             <Link href="/admin/categories" className="text-xs text-muted-foreground hover:underline">
+            <Link
+              href="/admin/categories"
+              className="text-base font-semibold text-black hover:underline hover:text-black/80 transition-colors duration-150"
+            >
               View all categories
             </Link>
           </CardContent>
@@ -142,7 +146,10 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{productCount}</div>
-            <Link href="/admin/products" className="text-xs text-muted-foreground hover:underline">
+            <Link
+              href="/admin/products"
+              className="text-base font-semibold text-black hover:underline hover:text-black/80 transition-colors duration-150"
+            >
               View all products
             </Link>
           </CardContent>
