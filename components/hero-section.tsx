@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 const slides = [
   {
     image: "/heroimage.avif?height=1080&width=1920",
-    title: "Inspiring style, redefining elegance",
-    description: "Discover our latest styles crafted with premium materials for exceptional comfort and timeless elegance.",
+    title: "Inspiring style",
+    description: "Discover our latest styles crafted with premium materials.",
     button: { label: "Shop Now", href: "/store" }
   },
   {
@@ -93,7 +93,7 @@ export function HeroSection() {
                   {slide.description}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button asChild size="lg" className="bg-white text-black hover:bg-white/90">
+                  <Button asChild size="lg" className="bg-black text-white ">
                     <Link href={slide.button.href}>{slide.button.label}</Link>
                   </Button>
                 </div>

@@ -130,7 +130,15 @@ export function Footer() {
             <img src="/card.png?height=30&width=50" alt="Google Pay" className="h-8" />
             <img src="/google-pay.png?height=30&width=50" alt="Mastercard" className="h-8" />
           </div>
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Mushrooms Junior. All rights reserved.</p>
+          <div className="flex flex-col items-center">
+            <p className="text-xs text-muted-foreground">
+              © {new Date().getFullYear()} Mushrooms Junior. All rights reserved.
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Designed and developed by Aadarsh Soni
+            </p>
+          </div>
+
           <div className="flex gap-4">
             <Link href="#" className="text-muted-foreground hover:text-foreground">
               <Facebook className="h-5 w-5" />
