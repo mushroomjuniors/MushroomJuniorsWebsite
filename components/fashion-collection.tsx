@@ -9,6 +9,7 @@ export type Product = {
   name: string
   price: number
   image: string
+  link: string
 }
 
 // Define types for the collection data
@@ -76,10 +77,11 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
                     className="object-cover"
                   />
                   <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                    <button className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3  rounded-md">
+                    <Link href={product.link}
+                    className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3  rounded-md">
                       <span>VIEW PRODUCTS</span>
                       <ShoppingCart className="w-5 h-5" />
-                    </button>
+                    </Link>
                   </div>
                 </div>
                 <div className="p-4 bg-zinc-900">
@@ -91,7 +93,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
 
           <div className="mt-auto pt-16">
             <Link
-              href="#"
+              href="store"
               className="inline-flex items-center gap-2 bg-zinc-900 text-white px-6 py-3 rounded-none hover:bg-zinc-800 transition-colors"
             >
               VIEW ALL COLLECTION <ArrowRight className="w-4 h-4" />
@@ -143,15 +145,14 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
                     className="object-cover"
                   />
                   <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                    <button className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3  rounded-md">
+                  <Link href={product.link} className="flex items-center justify-between w-full bg-black bg-opacity-80 text-white px-4 py-3  rounded-md">
                       <span>VIEW PRODUCTS</span>
                       <ShoppingCart className="w-5 h-5" />
-                    </button>
+                    </Link>
                   </div>
                 </div>
                 <div className="p-4 bg-zinc-900">
                   <h3 className="text-sm uppercase tracking-wide">{product.name}</h3>
-                  <p className="text-sm">${product.price.toFixed(2)}</p>
                 </div>
               </div>
             ))}
@@ -159,7 +160,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
 
           <div className="mt-auto pt-16">
             <Link
-              href="#"
+              href="/store"
               className="inline-flex items-center gap-2 bg-zinc-900 text-white px-6 py-3 rounded-none hover:bg-zinc-800 transition-colors"
             >
               VIEW ALL COLLECTION <ArrowRight className="w-4 h-4" />

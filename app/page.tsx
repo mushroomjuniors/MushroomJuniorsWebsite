@@ -23,18 +23,23 @@ const womenCollection = {
       name: "Midis",
       price: 99.0,
       image: "/images/midis.webp",
+      link: "/products?category=midis",
     },
     {
       id: "2",
       name: "Gowns",
       price: 39.0,
       image: "/images/gowns.jpg",
+      link: "/products?category=gowns",
+
     },
     {
       id: "3",
       name: "Ethnic Wear",
       price: 89.0,
       image: "/images/ethnic.webp",
+      link: "/products?category=ethnic",
+
     },
   ],
 }
@@ -50,18 +55,23 @@ const menCollection = {
       name: "Tuxedos",
       price: 99.0,
       image: "/images/tuxedos.webp",
+      link: "/products?category=tuxedos"
     },
     {
       id: "2",
       name: "Men's Party Wear",
       price: 39.0,
       image: "/images/men-party-wear.jpg",
+      link: "/products?category=men-party-wear",
+
     },
     {
       id: "3",
       name: "Jodhpuri",
       price: 89.0,
       image: "/images/jodhpuri.webp",
+      link: "/products?category=jodhpuri",
+
     },
   ],
 }
