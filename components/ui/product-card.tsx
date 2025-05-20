@@ -88,18 +88,17 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card
-      className="py-0 group/card transition-all duration-300 ease-in-out relative rounded-lg overflow-visible border-none"
+      className="py-0 group/card relative rounded-lg overflow-visible border-none transition-all duration-300 ease-in-out"
       onMouseEnter={() => setIsCardHovered(true)}
       onMouseLeave={() => setIsCardHovered(false)}
     >
       <div
-        className="absolute inset-0 rounded-lg bg-white shadow-xl transition-all duration-300 ease-in-out z-0"
+        className="absolute inset-0 rounded-lg bg-white shadow-xl transition-opacity duration-300 ease-in-out z-0"
         style={{
-          transform: isCardHovered ? 'scale(1)' : 'scale(0.95)',
           opacity: isCardHovered ? 1 : 0,
         }}
       />
-      <div className="relative z-[1] flex flex-col h-full p-3">
+      <div className="relative z-[1] flex flex-col h-full p-3 bg-card group-hover/card:scale-110 group-hover/card:bg-gray-50 dark:group-hover/card:bg-gray-800 transition-all duration-300 ease-in-out rounded-lg">
         <div className="relative aspect-square w-full overflow-hidden group/image">
           <Link href={`/products/${product.id}`} passHref className="block absolute inset-0">
             <Image

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import Link from "next/link"
-import { ChevronLeft, Mail, MapPin, Phone } from "lucide-react"
+import { ChevronLeft, Mail, MapPin, Phone, MessageSquare } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,6 +34,37 @@ export default function InquirePage() {
   })
 
   const { handleSubmit, control, formState: { isSubmitting, isSubmitSuccessful }, reset } = form
+
+  const WHATSAPP_PHONE_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER;
+
+  const handleWhatsAppInquiry = () => {
+    if (!WHATSAPP_PHONE_NUMBER) {
+      toast.error("WhatsApp number not configured.", {
+        description: "The WhatsApp contact number has not been set up correctly.",
+      });
+      return;
+    }
+    if (cartItems.length === 0) {
+      toast.info("Your cart is empty", {
+        description: "Add items to your cart to inquire on WhatsApp.",
+      });
+      return;
+    }
+
+    let message = "I would like to enquire the price of the following products:\n\n";
+    cartItems.forEach(item => {
+      // Assumption: Product links follow the pattern /products/[itemID]
+      // Adjust if your actual product URL structure is different.
+      const productLink = `${window.location.origin}/products/${item.id}`;
+      message += `Product Name: ${item.name}\n`;
+      message += `Product ID: ${item.id}\n`; // Assuming item.id is suitable for display and linking
+      message += `Product Link: ${productLink}\n\n`;
+    });
+
+    const encodedMessage = encodeURIComponent(message.trim());
+    const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodedMessage}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  };
 
   const onSubmit = async (data: InquiryFormValues) => {
     const inquiryData = {
@@ -82,11 +113,23 @@ export default function InquirePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>Thank you for your inquiry. We'll get back to you as soon as possible.</p>
-            <Button asChild className="m-4">
-              <Link href="/">Return to Home</Link>
-            </Button>
-             <Button variant="outline" onClick={() => {
-                form.reset({
+            <div className="mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3 justify-center">
+              <Button asChild className="w-full sm:w-auto">
+                <Link href="/">Return to Home</Link>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleWhatsAppInquiry}
+                disabled={cartItems.length === 0}
+                className="w-full sm:w-auto"
+              >
+                <MessageSquare className="h-4 w-4 mr-2" />
+                Inquire on WhatsApp
+              </Button>
+              {/* <Button
+                variant="outline"
+                onClick={() => {
+                  form.reset({
                     firstName: "",
                     lastName: "",
                     email: "",
@@ -94,8 +137,13 @@ export default function InquirePage() {
                     subject: "Inquiry about items in cart",
                     message: "",
                     cartItems: [],
-                });
-             }}>Send Another Inquiry</Button>
+                  });
+                }}
+                className="w-full sm:w-auto"
+              >
+                Send Another Inquiry
+              </Button> */}
+            </div>
           </CardContent>
         </Card>
       </div>
