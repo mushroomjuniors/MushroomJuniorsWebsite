@@ -147,7 +147,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </h3>
           </Link>
           <p className="text-xs text-gray-600 mt-1">
-            {product.price ? `$${product.price.toFixed(2)}` : "Enquire for price"}
+            {"Enquire for price"}
           </p>
         </div>
       </div>

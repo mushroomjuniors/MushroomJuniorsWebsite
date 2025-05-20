@@ -133,7 +133,6 @@ export default async function Home() {
       />
       <div className="container px-4 py-12 mx-auto space-y-16">
         {categoriesForOldSection.length > 0 && <CategorySection categories={categoriesForOldSection} />}
-        {trendingProductsData.length > 0 && <FeaturedProducts products={trendingProductsData} />}
         
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Ready to upgrade your style?</h2>
