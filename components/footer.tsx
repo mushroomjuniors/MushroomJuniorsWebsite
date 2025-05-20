@@ -135,7 +135,7 @@ export function Footer() {
               © {new Date().getFullYear()} Mushrooms Junior. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Designed and developed by Aadarsh Soni
+              Designed and developed by Aadarsh Soni and Vinit Jain
             </p>
           </div>
 
