@@ -32,14 +32,14 @@ const generateSlug = (name: string) => {
 };
 
 const menSubCategories = [
-  { title: "Men Party Wear" },
+  { title: "Boys Party Wear" },
   { title: "3/4 Denims" },
   { title: "Blazers" },
   { title: "Indo Western" },
-  { title: "Men Jackets" },
-  { title: "Men's Jeans" },
-  { title: "Men's Shirts" },
-  { title: "Men's T-Shirts" },
+  { title: "Boys Jackets" },
+  { title: "Boys Jeans" },
+  { title: "Boys Shirts" },
+  { title: "Boys T-Shirts" },
   { title: "Sherwani" },
   { title: "Suit" },
   { title: "Tuxedos" },
@@ -146,7 +146,7 @@ export function Header() {
               <Accordion type="multiple" className="w-full">
                 <AccordionItem value="men-category" className="border-b-0">
                   <AccordionTrigger className={`text-lg font-medium py-2 px-3 hover:no-underline hover:bg-muted rounded-md flex justify-between items-center w-full`}>
-                    Men
+                    Boys
                   </AccordionTrigger>
                   <AccordionContent className="pl-6 pr-3 pb-1 pt-0">
                     <nav className="flex flex-col gap-1 mt-1">
@@ -168,7 +168,7 @@ export function Header() {
 
                 <AccordionItem value="women-category" className="border-b-0">
                   <AccordionTrigger className={`text-lg font-medium py-2 px-3 hover:no-underline hover:bg-muted rounded-md flex justify-between items-center w-full`}>
-                    Women
+                    Girls
                   </AccordionTrigger>
                   <AccordionContent className="pl-6 pr-3 pb-1 pt-0">
                     <nav className="flex flex-col gap-1 mt-1">
@@ -223,7 +223,7 @@ export function Header() {
             {/* Men Dropdown */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
-                Men
+                Boys
               </NavigationMenuTrigger>
 
               <NavigationMenuContent>
@@ -234,7 +234,7 @@ export function Header() {
                       className="absolute inset-0"
                       href="/"
                       style={{
-                        backgroundImage: "url('/images/men-bg.webp')",
+                        backgroundImage: "url('/boys-bg.jpg')",
                         backgroundSize: "cover",
                         backgroundPosition: "center"
                       }}
@@ -276,7 +276,7 @@ export function Header() {
             {/* Women Dropdown Placeholder */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
-                Women
+                Girls
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="flex gap-4 p-4 md:w-[500px] lg:w-[700px]">
@@ -286,7 +286,7 @@ export function Header() {
                       className="absolute inset-0"
                       href="/"
                       style={{
-                        backgroundImage: "url('/images/woman-bg.png')",
+                        backgroundImage: "url('/girls-bg.jpg')",
                         backgroundSize: "cover",
                         backgroundPosition: "center"
                       }}

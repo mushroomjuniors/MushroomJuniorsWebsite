@@ -127,12 +127,12 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
         </div>
 
         {/* Main Image - Smaller on desktop */}
-        <div className=" relative aspect-square md:flex-1 order-1 md:order-2 mx-auto w-full md:w-[60%]">
+        <div className="relative aspect-square order-1 md:order-2 mx-auto w-full md:w-[45%] ">
           <Image
             src={currentImage}
             alt={product.name}
             fill
-            className="object-contain"
+            className="object-contain "
             unoptimized={currentImage.startsWith('/placeholder.svg')}
           />
           {product.isNew && <div className="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs">NEW</div>}

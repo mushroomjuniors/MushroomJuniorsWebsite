@@ -70,13 +70,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=men" className="text-muted-foreground hover:text-foreground">
-                    Men
+                <Link href="/cart" className="text-muted-foreground hover:text-foreground">
+                    Cart
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=women" className="text-muted-foreground hover:text-foreground">
-                    Women
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground">
+                    Contact
                 </Link>
               </li>
               <li>

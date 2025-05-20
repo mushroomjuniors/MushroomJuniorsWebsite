@@ -98,10 +98,13 @@ export async function createCategory(prevState: CategoryActionState, formData: F
   }
 }
 
-export async function updateCategory(id: string, prevState: CategoryActionState, formData: FormData): Promise<CategoryActionState> {
-  const name = formData.get('name')?.toString().trim() || '';
-  const description = formData.get('description')?.toString().trim() || '';
-  const image_url = formData.get('image_url')?.toString().trim() || '';
+export async function updateCategory(
+  id: string,
+  data: { name: string; description?: string; image_url?: string }
+): Promise<CategoryActionState> {
+  const name = data.name?.toString().trim() || '';
+  const description = data.description?.toString().trim() || '';
+  const image_url = data.image_url?.toString().trim() || '';
 
   try {
     const validatedData = CategoryActionSchema.parse({

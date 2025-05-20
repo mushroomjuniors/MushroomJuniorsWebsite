@@ -40,7 +40,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
         <div className="w-full lg:w-1/2 bg-black text-white lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center p-8 lg:p-16 relative">
           <div className="absolute inset-0 opacity-30">
             <Image
-              src={womenCollection.backgroundImage || "/woman-bg.png"}
+              src={womenCollection.backgroundImage || "/girls-collections.webp"}
               alt={`${womenCollection.title} Background`}
               fill
               className="object-cover"
@@ -108,7 +108,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
         <div className="w-full lg:w-1/2 bg-black text-white lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center p-8 lg:p-16 relative">
           <div className="absolute inset-0 opacity-30">
             <Image
-              src={menCollection.backgroundImage || "/man-bg.png"}
+              src={menCollection.backgroundImage || "/boys-collections.webp"}
               alt={`${menCollection.title} Background`}
               fill
               className="object-cover"

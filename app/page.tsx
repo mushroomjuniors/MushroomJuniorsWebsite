@@ -13,23 +13,23 @@ import FashionCollection from "@/components/fashion-collection"
 
 // Sample data for the collections
 const womenCollection = {
-  title: "Women's Collection",
+  title: "Girl's Collection",
   description:
-    "Indulge in comfort and quality with our thoughtfully designed women's collection.",
-  backgroundImage: "/images/woman-bg.png",
+    "Indulge in comfort and quality with our thoughtfully designed girl's collection.",
+  backgroundImage: "/girls-collections.webp",
   products: [
     {
       id: "1",
       name: "Midis",
       price: 99.0,
-      image: "/images/midis.webp",
+      image: "/midis.webp",
       link: "/products?category=midis",
     },
     {
       id: "2",
       name: "Gowns",
       price: 39.0,
-      image: "/images/gowns.jpg",
+      image: "/gowns.jpg",
       link: "/products?category=gowns",
 
     },
@@ -37,7 +37,7 @@ const womenCollection = {
       id: "3",
       name: "Ethnic Wear",
       price: 89.0,
-      image: "/images/ethnic.webp",
+      image: "/ethnic.webp",
       link: "/products?category=ethnic",
 
     },
@@ -45,23 +45,23 @@ const womenCollection = {
 }
 
 const menCollection = {
-  title: "Men's Collection",
+  title: "Boys' Collection",
   description:
-    "Define your style with our latest men's collection. Designed for the confident man, these pieces blend contemporary design with classic appeal.",
-  backgroundImage: "/images/men-bg.webp",
+    "Define your style with our latest boys' collection. Designed for the confident man, these pieces blend contemporary design with classic appeal.",
+  backgroundImage: "/boys-collection.webp",
   products: [
     {
       id: "1",
       name: "Tuxedos",
       price: 99.0,
-      image: "/images/tuxedos.webp",
+      image: "/tuxedos.webp",
       link: "/products?category=tuxedos"
     },
     {
       id: "2",
-      name: "Men's Party Wear",
+      name: "Boys Party Wear",
       price: 39.0,
-      image: "/images/men-party-wear.jpg",
+      image: "/boys-party-wear.avif",
       link: "/products?category=men-party-wear",
 
     },
@@ -69,7 +69,7 @@ const menCollection = {
       id: "3",
       name: "Jodhpuri",
       price: 89.0,
-      image: "/images/jodhpuri.webp",
+      image: "/jodhpuri.webp",
       link: "/products?category=jodhpuri",
 
     },

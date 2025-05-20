@@ -37,7 +37,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
           </p>
         </div>
         {/* Horizontal scrollable for all views */}
-        <div className="flex overflow-x-auto gap-4 sm:gap-5 pb-4 snap-x snap-mandatory scrollbar-hide">
+        <div className="flex overflow-x-auto overflow-y-visible gap-4 sm:gap-5 pb-4 pt-4 snap-x snap-mandatory scrollbar-hide">
           {products.map((product) => (
             <div key={product.id} className="min-w-[90%] sm:min-w-[55%] md:min-w-[35%] lg:min-w-[28%] xl:min-w-[22%] snap-start">
               <ProductCard product={product} />
