@@ -58,8 +58,8 @@ export function Footer() {
               <br />
               See Our Stores
             </p>
-            <p className="text-sm text-muted-foreground">+91 9829000000</p>
-            <p className="text-sm text-muted-foreground">info@mushroomjunior.com</p>
+            <p className="text-sm text-muted-foreground">+91 9116999844</p>
+            <p className="text-sm text-muted-foreground">mushroomjuniors@gmail.com</p>
           </div>
           <div className="space-y-4">
             <h3 className="text-sm font-bold">Explore</h3>
@@ -140,18 +140,12 @@ export function Footer() {
           </div>
 
           <div className="flex gap-4">
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              <Facebook className="h-5 w-5" />
-              <span className="sr-only">Facebook</span>
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
+            
+            <Link href="https://www.instagram.com/mushroomjuniors?igsh=YXBrcWRvdnpxMmFh" className="text-muted-foreground hover:text-foreground">
               <Instagram className="h-5 w-5" />
               <span className="sr-only">Instagram</span>
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              <Twitter className="h-5 w-5" />
-              <span className="sr-only">Twitter</span>
-            </Link>
+            
           </div>
         </div>
       </div>

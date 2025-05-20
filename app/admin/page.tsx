@@ -106,6 +106,7 @@ export default async function AdminDashboard() {
 
   return (
     <main className="grid flex-1 items-start gap-4 md:gap-8">
+      
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -155,8 +156,9 @@ export default async function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-        <Card className="xl:col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        
+        <Card className="w-full">
           <CardHeader className="flex flex-row items-center">
             <div className="grid gap-2">
               <CardTitle>Recent Inquiries</CardTitle>
@@ -203,6 +205,16 @@ export default async function AdminDashboard() {
             )}
           </CardContent>
         </Card>
+        <div className="flex items-start justify-end">
+          <a
+            href="https://analytics.google.com/analytics/web/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 bg-black text-white font-semibold rounded hover:bg-red-700 transition-colors duration-150"
+          >
+            Go to Google Analytics
+          </a>
+        </div>
       </div>
     </main>
   );

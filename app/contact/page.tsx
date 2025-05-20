@@ -150,14 +150,14 @@ export default function ContactPage() {
                   <Phone className="h-5 w-5 text-red-600 mt-0.5" />
                   <div>
                     <h4 className="font-medium">Phone</h4>
-                    <p className="text-muted-foreground">+91 9829000000</p>
+                    <p className="text-muted-foreground">+91 9116999844</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="h-5 w-5 text-red-600 mt-0.5" />
                   <div>
                     <h4 className="font-medium">Email</h4>
-                    <p className="text-muted-foreground">info@mushroomjunior.com</p>
+                    <p className="text-muted-foreground">mushroomjuniors@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

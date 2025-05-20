@@ -58,7 +58,7 @@ export default function AdminLayout({ children }: PropsWithChildren) {
         <main className="flex flex-1 items-center justify-center">
           <p>Loading access control...</p> 
         </main>
-        <Footer />
+        
       </div>
     );
   }
