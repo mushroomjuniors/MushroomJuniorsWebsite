@@ -200,7 +200,7 @@ export function Header() {
         </Sheet>
 
         <Link href="/" className={`ml-4 md:ml-0 flex items-center gap-2 ${textColor}`}>
-          <span className="text-xl font-bold">Mushrooms Junior</span>
+          <img src="/logo2.png" alt="Mushroom Junior Logo" className="h-10 w-auto" />
         </Link>
 
         <NavigationMenu className="mx-6 hidden md:flex items-center gap-6 text-sm">

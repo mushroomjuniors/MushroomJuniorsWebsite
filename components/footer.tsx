@@ -50,9 +50,9 @@ export function Footer() {
 
       {/* Main footer content */}
       <div className="container px-4 py-12 mx-auto">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Mushrooms Junior</h3>
+          <img src="/logo0.png" alt="Mushroom Junior Logo" className="h-16 w-auto" />
             <p className="text-sm text-muted-foreground">
               Find a location nearest you.
               <br />
@@ -79,11 +79,7 @@ export function Footer() {
                     Contact
                 </Link>
               </li>
-              <li>
-                <Link href="/products?category=children" className="text-muted-foreground hover:text-foreground">
-                    Children
-                </Link>
-              </li>
+              
               
               {/* <li>
                 <Link href="/checkout" className="text-muted-foreground hover:text-foreground">
@@ -123,25 +119,8 @@ export function Footer() {
             </ul>
           </div>
           <div className="space-y-4">
-            <h3 className="text-sm font-bold">Subscribe</h3>
-            <p className="text-sm text-muted-foreground">
-              Enter your email below to be the first to know about new collections and product launches.
-            </p>
-            <div className="flex gap-2">
-              <Input type="email" placeholder="Your Email" className="flex-1" />
-              <Button type="submit" variant="outline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </Button>
-            </div>
+            
+            
           </div>
         </div>
 
