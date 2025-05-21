@@ -425,9 +425,9 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
                   <p className="text-gray-700">Enquire for price. Delivery time: 2-3 business days.</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Returns</h3>
+                  <h3 className="font-medium">Returns and Exchanges</h3>
                   <p className="text-gray-700">
-                    Free returns within 7 days. Items must be unworn with original tags attached.
+                    Exchange available within 7 days. Items must be unworn with original tags attached.
                   </p>
                 </div>
               </div>
