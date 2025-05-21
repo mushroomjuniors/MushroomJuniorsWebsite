@@ -13,12 +13,12 @@ interface EditProductPageProps {
   };
 }
 
-async function getProduct(id: string): Promise<Partial<ProductFormValues> & { id: string } | null> {
+async function getProduct(id: string): Promise<Partial<ProductFormValues> & { id: string; image_urls?: string[] | null; is_trending?: boolean | null } | null> {
   // const supabase = createClient(); // No longer need to call createClient here
   // We directly use the imported 'supabase' instance
   const { data, error } = await supabase
     .from('products')
-    .select('id, name, description, price, stock_quantity, category_id, image_url, sizes') // Added 'sizes'
+    .select('id, name, description, price, stock_quantity, category_id, image_url, image_urls, is_trending, sizes') // Added 'image_urls', 'is_trending', and 'sizes'
     .eq('id', id)
     .single();
 
@@ -26,7 +26,7 @@ async function getProduct(id: string): Promise<Partial<ProductFormValues> & { id
     console.error(`Error fetching product ${id}:`, error);
     return null;
   }
-  return data as Partial<ProductFormValues> & { id: string }; 
+  return data as Partial<ProductFormValues> & { id: string; image_urls?: string[] | null; is_trending?: boolean | null };
 }
 
 async function getCategories(): Promise<ProductCategory[]> {

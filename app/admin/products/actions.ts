@@ -65,6 +65,7 @@ export async function createProduct(
     }
 
     revalidatePath("/admin/products");
+    revalidatePath("/");
     return { message: `Product "${dataToInsert.name}" created successfully.` };
 
   } catch (e: any) {
@@ -110,6 +111,7 @@ export async function updateProduct(
 
     revalidatePath("/admin/products");
     revalidatePath(`/admin/products/edit/${id}`);
+    revalidatePath("/");
     return { message: `Product "${dataToUpdate.name}" updated successfully.` };
 
   } catch (e: any) {
