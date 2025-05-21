@@ -5,6 +5,7 @@ import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Image from "next/image"
 
 export function CTAPopup() {
   const [isOpen, setIsOpen] = useState(false)
@@ -33,36 +34,19 @@ export function CTAPopup() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+      <div className="relative w-full max-w-[1040px] rounded-lg bg-white p-0 shadow-lg flex flex-col items-center justify-center">
         <Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={handleClose} aria-label="Close">
           <X className="h-4 w-4" />
         </Button>
-
-        <div className="text-center">
-          <h2 className="mb-2 text-2xl font-bold">Get 10% Off Your First Order</h2>
-          <p className="mb-6 text-muted-foreground">
-            Sign up for our newsletter and receive a 10% discount code for your first purchase.
-          </p>
-
-          <form
-            className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault()
-              handleClose()
-            }}
-          >
-            <div className="space-y-2">
-              <Label htmlFor="popup-email">Email</Label>
-              <Input id="popup-email" type="email" placeholder="your@email.com" required />
-            </div>
-            <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
-              Get My Discount
-            </Button>
-          </form>
-
-          <p className="mt-4 text-xs text-muted-foreground">
-            By signing up, you agree to receive marketing emails from us. You can unsubscribe at any time.
-          </p>
+        <div className="flex items-center justify-center w-full h-full p-0">
+          <Image
+            src="/cta-popup.png"
+            alt="Special Offer"
+            width={1040}
+            height={520}
+            className="rounded-lg object-contain"
+            priority
+          />
         </div>
       </div>
     </div>
