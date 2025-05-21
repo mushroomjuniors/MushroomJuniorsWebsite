@@ -17,9 +17,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createCategory, updateCategory } from "@/app/admin/categories/actions";
-import { useState } from "react";
+import { createCategory, updateCategory, CategoryActionState } from "@/app/admin/categories/actions";
+import { useState, useEffect } from "react";
 import { uploadImageToCloudinary } from "@/app/actions/imageUploadActions";
+import { useFormState } from "react-dom";
 
 const categoryFormSchema = z.object({
   name: z.string().min(2, {
@@ -39,12 +40,16 @@ interface CategoryFormProps {
   initialData?: Partial<CategoryFormValues> & { id?: string; image_url?: string | null };
 }
 
+const initialState: CategoryActionState = {};
+
 export function CategoryForm({ initialData }: CategoryFormProps) {
   const router = useRouter();
   const isEditMode = !!initialData?.id;
 
   const [categoryImageFile, setCategoryImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  const [state, formAction] = useFormState(createCategory, initialState);
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
@@ -55,6 +60,24 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
     },
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (state.message) {
+      toast.success(state.message);
+      router.push("/admin/categories");
+      router.refresh();
+    } else if (state.error) {
+      toast.error("Operation failed:", {
+        description: state.error,
+      });
+      if (state.fields) {
+        Object.keys(state.fields).forEach((field) => {
+          form.setError(field as keyof CategoryFormValues, { message: state.fields![field] });
+        });
+      }
+    }
+    setIsUploading(false);
+  }, [state, router, form]);
 
   async function onSubmit(data: CategoryFormValues) {
     setIsUploading(true);
@@ -73,34 +96,21 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
         }
       }
 
-      const finalData = {
-        ...data,
-        image_url: finalImageUrl,
-      };
-
-      let result;
-      if (isEditMode && initialData?.id) {
-        result = await updateCategory(initialData.id, finalData);
-      } else {
-        result = await createCategory(finalData);
+      const formDataForAction = new FormData();
+      formDataForAction.append("name", data.name);
+      if (data.description) {
+        formDataForAction.append("description", data.description);
+      }
+      if (finalImageUrl) {
+        formDataForAction.append("image_url", finalImageUrl);
       }
 
-      if (result.error) {
-        throw new Error(result.error  + (result.fields ? ` (${Object.values(result.fields).join(', ')})` : ''));
-      }
+      formAction(formDataForAction);
 
-      toast.success(isEditMode ? "Category updated" : "Category created", {
-        description: isEditMode
-          ? `The category "${data.name}" has been updated.`
-          : `A new category "${data.name}" has been created.`,
-      });
-      router.push("/admin/categories");
-      router.refresh();
     } catch (error: any) {
       toast.error("Operation failed:", {
         description: error.message || "There was a problem with your request.",
       });
-    } finally {
       setIsUploading(false);
     }
   }
