@@ -10,7 +10,7 @@ import { Toaster } from "@/components/ui/sonner"; // Assuming shadcn puts it in 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "StyleHub | Premium Clothing Brand",
+  title: "Mushroom Juniors | Premium Clothing Brand",
   description: "Discover the latest fashion trends with our premium clothing collection",
 }
 
