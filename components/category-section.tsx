@@ -86,7 +86,7 @@ export function CategorySection({ categories, title = "Season Collection" }: Cat
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center">
-            <h2 className="text-3xl font-bold tracking-tight mb-2">{title}</h2>
+            <h2 className="text-4xl font-bold tracking-tight mb-2 text-red-700 sm:text-6xl">{title}</h2>
             <p className="text-muted-foreground">No categories available.</p>
           </div>
         </div>
@@ -98,7 +98,7 @@ export function CategorySection({ categories, title = "Season Collection" }: Cat
     <section className="py-12">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
+          <h2 className="text-4xl font-bold tracking-tight text-red-700 sm:text-6xl">{title}</h2>
           <div className="flex items-center gap-1">
             <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => api?.scrollPrev()} disabled={!api?.canScrollPrev()}>
               <ChevronLeft className="h-4 w-4" />

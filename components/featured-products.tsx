@@ -17,7 +17,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
       <section className="py-12 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center space-y-3">
-            <h2 className="text-3xl font-bold tracking-tight">Trending Products</h2>
+            <h2 className="text-5xl font-bold tracking-tight text-red-700">Trending Products</h2>
             <p className="text-muted-foreground max-w-[600px]">
               No trending products available at the moment.
             </p>
@@ -31,7 +31,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
     <section className="py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center text-center space-y-3 mb-8">
-          <h2 className="text-3xl font-bold tracking-tight">Trending Products</h2>
+          <h2 className="text-5xl font-bold tracking-tight text-red-700">Trending Products</h2>
           <p className="text-muted-foreground max-w-[600px]">
             Check out what's hot right now!
           </p>

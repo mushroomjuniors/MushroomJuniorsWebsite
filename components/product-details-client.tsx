@@ -209,7 +209,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
                     className="rounded-none h-10"
                     onClick={() => setSelectedSize(size)}
                   >
-                    {size}
+                    {size} yrs
                   </Button>
                 ))}
               </div>

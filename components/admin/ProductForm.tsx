@@ -46,11 +46,11 @@ const productFormSchema = z.object({
   image_url: z.string().url("Invalid URL for primary image. Should be a Cloudinary URL after upload.").optional().or(z.literal('')),
   // image_urls is for the array of Cloudinary URLs for the gallery
   image_urls: z.array(z.string().url("Invalid URL for gallery image. Should be a Cloudinary URL after upload.")).optional(),
-  sizes: z.array(z.enum(["XS", "S", "M", "L", "XL", "XXL", "XXXL"])).optional(),
+  sizes: z.array(z.enum(["1-3", "3-6", "6-9", "9-12", "12-15"])).optional(),
   is_trending: z.boolean().default(false).optional(),
 });
 
-export const availableSizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] as const;
+export const availableSizes = ["1-3", "3-6", "6-9", "9-12", "12-15"] as const;
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 
@@ -258,7 +258,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         
         {/* Sizes Field */}
         <FormField control={form.control} name="sizes" render={({ field }) => (
-            <FormItem><FormLabel>Available Sizes</FormLabel><FormDescription>Select all sizes that apply.</FormDescription><div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">{availableSizes.map((size) => (<FormItem key={size} className="flex flex-row items-center space-x-2 rounded-md border p-3 hover:bg-accent hover:text-accent-foreground"><FormControl><Checkbox id={`size-${size}`} checked={field.value?.includes(size)} onCheckedChange={(checked) => {const currentSizes = field.value || []; if (checked) {field.onChange([...currentSizes, size]);} else {field.onChange(currentSizes.filter((s) => s !== size));}}}/></FormControl><FormLabel htmlFor={`size-${size}`} className="font-normal cursor-pointer flex-1">{size}</FormLabel></FormItem>))}</div><FormMessage /></FormItem>
+            <FormItem><FormLabel>Available Age Groups</FormLabel><FormDescription>Select all age groups that apply.</FormDescription><div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">{availableSizes.map((size) => (<FormItem key={size} className="flex flex-row items-center space-x-2 rounded-md border p-3 hover:bg-accent hover:text-accent-foreground"><FormControl><Checkbox id={`size-${size}`} checked={field.value?.includes(size)} onCheckedChange={(checked) => {const currentSizes = field.value || []; if (checked) {field.onChange([...currentSizes, size]);} else {field.onChange(currentSizes.filter((s) => s !== size));}}}/></FormControl><FormLabel htmlFor={`size-${size}`} className="font-normal cursor-pointer flex-1">{size} yrs</FormLabel></FormItem>))}</div><FormMessage /></FormItem>
         )} />
 
         {/* Is Trending Checkbox */}
