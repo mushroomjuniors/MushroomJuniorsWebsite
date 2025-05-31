@@ -52,7 +52,7 @@ export function Footer() {
       <div className="container px-4 py-12 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-4">
-            <img src="/logo2.png" alt="Mushroom Junior Logo" className="h-16 w-auto" />
+            <img src="/MUSHROOM-white-tp.png" alt="Mushroom Junior Logo" className="h-16 w-auto" />
             <p className="text-sm text-white/70">
               Find a location nearest you.
               <br />

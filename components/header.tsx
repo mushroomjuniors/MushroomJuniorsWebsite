@@ -201,7 +201,7 @@ export function Header() {
 
         <Link href="/" className={`ml-4 md:ml-0 flex items-center gap-2 ${textColor}`}>
           <img
-            src={isHomePage && !scrolled ? "/logo0.png" : "/logo2.png"}
+            src={isHomePage && !scrolled ? "/MUSHROOM-black.png" : "/MUSHROOM-white-tp.png"}
             alt="Mushroom Junior Logo"
             className="h-10 w-auto"
           />
