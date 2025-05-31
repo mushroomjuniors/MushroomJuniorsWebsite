@@ -150,7 +150,7 @@ export default async function AdminProductsPage() {
                       <span className="text-xs text-gray-500">N/A</span>
                     )}
                   </TableCell>
-                  <TableCell className="hidden sm:table-cell text-right">${product.price.toFixed(2)}</TableCell>
+                  <TableCell className="hidden sm:table-cell text-right">₹{product.price.toFixed(2)}</TableCell>
                   <TableCell className="text-right hidden lg:table-cell">{product.stock_quantity}</TableCell>
                   <TableCell>
                     <Badge variant={product.stock_quantity > 0 ? "default" : "destructive"}>
