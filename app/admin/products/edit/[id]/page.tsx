@@ -45,8 +45,9 @@ async function getCategories(): Promise<ProductCategory[]> {
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
+  const resolvedParams = await params;
   const [product, categories] = await Promise.all([
-    getProduct(params.id),
+    getProduct(resolvedParams.id),
     getCategories(),
   ]);
 

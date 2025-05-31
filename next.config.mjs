@@ -36,6 +36,9 @@ const nextConfig = {
     // Ignoring ESLint errors can increase the risk of code quality issues
     ignoreDuringBuilds: true,
   },
+  serverActions: {
+    bodySizeLimit: '10mb', // or whatever limit you need
+  },
 };
 
 export default nextConfig;
