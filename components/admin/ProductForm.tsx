@@ -96,29 +96,15 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     try {
       // Handle primary image upload if a new file is selected
       if (primaryImageFile) {
-        const formData = new FormData()
-        formData.append("file", primaryImageFile)
-        const uploadResult = await uploadImageToCloudinary(formData)
-        if (uploadResult.success && uploadResult.url) {
-          processedPrimaryImageUrl = uploadResult.url
-        } else {
-          throw new Error(uploadResult.error || "Primary image upload failed.")
-        }
+        processedPrimaryImageUrl = await uploadDirectToCloudinary(primaryImageFile)
       }
 
       // Handle gallery image uploads if new files are selected
       if (galleryImageFiles && galleryImageFiles.length > 0) {
         for (let i = 0; i < galleryImageFiles.length; i++) {
           const file = galleryImageFiles[i]
-          const formData = new FormData()
-          formData.append("file", file)
-          const uploadResult = await uploadImageToCloudinary(formData)
-          if (uploadResult.success && uploadResult.url) {
-            newUploadedGalleryUrls.push(uploadResult.url)
-          } else {
-            // Optionally, collect all errors or stop on first error
-            throw new Error(uploadResult.error || `Gallery image ${file.name} upload failed.`)
-          }
+          const url = await uploadDirectToCloudinary(file)
+          newUploadedGalleryUrls.push(url)
         }
       }
 
@@ -418,4 +404,17 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
       </form>
     </Form>
   )
+}
+
+async function uploadDirectToCloudinary(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "unsigned_preset"); // Replace with your preset
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/dy0zo3822/image/upload", // Replace with your cloud name
+    { method: "POST", body: formData }
+  );
+  const data = await res.json();
+  if (data.secure_url) return data.secure_url;
+  throw new Error(data.error?.message || "Cloudinary upload failed");
 }
