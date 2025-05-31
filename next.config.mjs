@@ -37,7 +37,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   serverActions: {
-    bodySizeLimit: '10mb', // or whatever limit you need
+    bodySizeLimit: '15mb', // or whatever limit you need
   },
 };
 
