@@ -32,7 +32,7 @@ const generateSlug = (name: string) => {
 };
 
 const menSubCategories = [
-  { title: "Boys Party Wear" },
+  { title: "Casual-Wear" },
   { title: "3/4 Denims" },
   { title: "Blazers" },
   { title: "Indo Western" },
