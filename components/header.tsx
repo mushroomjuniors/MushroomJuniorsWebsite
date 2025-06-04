@@ -32,7 +32,7 @@ const generateSlug = (name: string) => {
 };
 
 const menSubCategories = [
-  { title: "Casual-Wear" },
+ 
   { title: "Indo Western" },
   { title: "Blazers" },
   { title: "Sherwani" },
@@ -40,6 +40,7 @@ const menSubCategories = [
   { title: "Boys Jeans" },
   { title: "Boys Shirts" },
   { title: "Boys T-Shirts" },
+  { title: "Casual-Wear" },
   { title: "Boys Jackets" },
   { title: "3/4 Denims" },
   { title: "Tuxedos" },
