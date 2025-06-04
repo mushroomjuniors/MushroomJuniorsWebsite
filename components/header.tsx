@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { Menu, Search, ShoppingCart, User, X, ChevronDown } from "lucide-react"
+import { Menu, Search, ShoppingCart, User, X, ChevronDown } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -24,6 +24,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { createClient } from "@supabase/supabase-js"
 
 // Helper function to generate a simple slug
 const generateSlug = (name: string) => {
@@ -31,60 +32,10 @@ const generateSlug = (name: string) => {
   return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 };
 
-const menSubCategories = [
-  { title: "Boys Party Wear" },
-  { title: "3/4 Denims" },
-  { title: "Blazers" },
-  { title: "Indo Western" },
-  { title: "Boys Jackets" },
-  { title: "Boys Jeans" },
-  { title: "Boys Shirts" },
-  { title: "Boys T-Shirts" },
-  { title: "Sherwani" },
-  { title: "Suit" },
-  { title: "Tuxedos" },
-  { title: "Lowers" },
-];
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
-const womenSubCategories = [
-  { title: "Dungree" },
-  { title: "Ethnic" },
-  { title: "Frocks" },
-  { title: "Gowns" },
-  { title: "Jackets" },
-  { title: "Jeans" },
-  { title: "Leggings" },
-  { title: "Lowers" },
-  { title: "Midis" },
-  { title: "Party Tops" },
-  { title: "Shorts" },
-  { title: "Toppers" },
-  { title: "T-Shirts" },
-];
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -93,6 +44,9 @@ export function Header() {
   const cartItemCount = cartItems.length
   const pathname = usePathname()
   const isHomePage = pathname === "/"
+
+  type Category = { id: string; name: string; slug: string; gender: string };
+  const [categories, setCategories] = useState<Category[]>([])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,6 +69,18 @@ export function Header() {
       window.removeEventListener("scroll", handleScroll)
     }
   }, [isHomePage])
+
+  useEffect(() => {
+    async function fetchCategories() {
+      const { data, error } = await supabase.from("categories").select("id, name, slug, gender");
+      if (!error) setCategories(data || []);
+    }
+    fetchCategories();
+  }, [])
+
+  const boysCategories = categories.filter((cat) => cat.gender === "boys");
+  const girlsCategories = categories.filter((cat) => cat.gender === "girls");
+  const unisexCategories = categories.filter((cat) => cat.gender === "unisex");
 
   const headerClasses = isHomePage
     ? `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black border-b border-gray-800" : "bg-transparent"}`
@@ -150,18 +116,15 @@ export function Header() {
                   </AccordionTrigger>
                   <AccordionContent className="pl-6 pr-3 pb-1 pt-0">
                     <nav className="flex flex-col gap-1 mt-1">
-                      {menSubCategories.map((subCategory) => {
-                        const categorySlug = generateSlug(subCategory.title);
-                        return (
-                          <Link
-                            key={subCategory.title}
-                            href={`/products?category=${categorySlug}`}
-                            className="block text-base py-2 px-3 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
-                          >
-                            {subCategory.title}
-                          </Link>
-                        );
-                      })}
+                      {boysCategories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/products?category=${cat.slug}`}
+                          className="block text-base py-2 px-3 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))}
                     </nav>
                   </AccordionContent>
                 </AccordionItem>
@@ -172,18 +135,15 @@ export function Header() {
                   </AccordionTrigger>
                   <AccordionContent className="pl-6 pr-3 pb-1 pt-0">
                     <nav className="flex flex-col gap-1 mt-1">
-                      {womenSubCategories.map((subCategory) => {
-                        const categorySlug = generateSlug(subCategory.title);
-                        return (
-                          <Link
-                            key={subCategory.title}
-                            href={`/products?category=${categorySlug}`}
-                            className="block text-base py-2 px-3 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
-                          >
-                            {subCategory.title}
-                          </Link>
-                        );
-                      })}
+                      {girlsCategories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/products?category=${cat.slug}`}
+                          className="block text-base py-2 px-3 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))}
                     </nav>
                   </AccordionContent>
                 </AccordionItem>
@@ -224,15 +184,13 @@ export function Header() {
               </Link>
             </NavigationMenuItem>
 
-            {/* Men Dropdown */}
+            {/* Boys Dropdown (Dynamic) */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
                 Boys
               </NavigationMenuTrigger>
-
               <NavigationMenuContent>
                 <div className="flex gap-4 p-4 md:w-[500px] lg:w-[700px]">
-                  {/* Left: Collection Card */}
                   <div className="relative flex flex-col justify-end rounded-md overflow-hidden min-w-[180px] max-w-[220px] w-full h-[220px]">
                     <a
                       className="absolute inset-0"
@@ -255,37 +213,38 @@ export function Header() {
                       </p>
                     </div>
                   </div>
-                  {/* Right: Subcategories */}
-                  <ul className="grid grid-cols-3 gap-3 flex-1">
-                    {menSubCategories.map((subCategory) => {
-                      const categorySlug = generateSlug(subCategory.title);
-                      return (
-                        <li key={subCategory.title}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              href={`/products?category=${categorySlug}`}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
-                            >
-                              <div className="text-sm font-medium leading-none">{subCategory.title}</div>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      );
-                    })}
+                  <ul
+                    className="grid gap-3 flex-1 h-[220px] overflow-y-auto pr-2"
+                    style={{
+                      gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+                      alignContent: "start",
+                    }}
+                  >
+                    {boysCategories.map((cat) => (
+                      <li key={cat.id}>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={`/products?category=${cat.slug}`}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                          >
+                            <div className="text-sm font-medium leading-none">{cat.name}</div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {/* Women Dropdown Placeholder */}
+            {/* Girls Dropdown (Dynamic) */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className={`${textColor} bg-transparent ${navLinkHoverBg} font-medium`}>
                 Girls
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="flex gap-4 p-4 md:w-[500px] lg:w-[700px]">
-                  {/* Left: Collection Card */}
-                  <div className="relative flex flex-col justify-end rounded-md overflow-hidden min-w-[180px] max-w-[220px] w-full ">
+                  <div className="relative flex flex-col justify-end rounded-md overflow-hidden min-w-[180px] max-w-[220px] w-full h-[220px]">
                     <a
                       className="absolute inset-0"
                       href="/"
@@ -307,23 +266,25 @@ export function Header() {
                       </p>
                     </div>
                   </div>
-                  {/* Right: Subcategories */}
-                  <ul className="grid grid-cols-3 gap-3 flex-1">
-                    {womenSubCategories.map((subCategory) => {
-                      const categorySlug = generateSlug(subCategory.title);
-                      return (
-                        <li key={subCategory.title}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              href={`/products?category=${categorySlug}`}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
-                            >
-                              <div className="text-sm font-medium leading-none">{subCategory.title}</div>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      );
-                    })}
+                  <ul
+                    className="grid gap-3 flex-1 h-[220px] overflow-y-auto pr-2"
+                    style={{
+                      gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+                      alignContent: "start",
+                    }}
+                  >
+                    {girlsCategories.map((cat) => (
+                      <li key={cat.id}>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={`/products?category=${cat.slug}`}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                          >
+                            <div className="text-sm font-medium leading-none ">{cat.name}</div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </NavigationMenuContent>

@@ -19,7 +19,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createCategory, updateCategory, CategoryActionState } from "@/app/admin/categories/actions";
 import { useState, useEffect } from "react";
-import { uploadImageToCloudinary } from "@/app/actions/imageUploadActions";
 import { useFormState } from "react-dom";
 
 const categoryFormSchema = z.object({
@@ -32,6 +31,7 @@ const categoryFormSchema = z.object({
     message: "Description must not be longer than 500 characters.",
   }).optional(),
   image_url: z.string().url({ message: "Please enter a valid image URL."}).optional().or(z.literal('')),
+  gender: z.enum(["boys", "girls", "unisex"]),
 });
 
 export type CategoryFormValues = z.infer<typeof categoryFormSchema>;
@@ -42,6 +42,19 @@ interface CategoryFormProps {
 
 const initialState: CategoryActionState = {};
 
+async function uploadDirectToCloudinary(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "unsigned_preset"); // Replace with your preset
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/dy0zo3822/image/upload", // Replace with your cloud name
+    { method: "POST", body: formData }
+  );
+  const data = await res.json();
+  if (data.secure_url) return data.secure_url;
+  throw new Error(data.error?.message || "Cloudinary upload failed");
+}
+
 export function CategoryForm({ initialData }: CategoryFormProps) {
   const router = useRouter();
   const isEditMode = !!initialData?.id;
@@ -49,35 +62,16 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
   const [categoryImageFile, setCategoryImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const [state, formAction] = useFormState(createCategory, initialState);
-
-  const form = useForm<CategoryFormValues>({
+  const form = useForm<z.infer<typeof categoryFormSchema>>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
       name: initialData?.name || "",
       description: initialData?.description || "",
       image_url: initialData?.image_url || "",
+      gender: initialData?.gender ?? "unisex",
     },
     mode: "onChange",
   });
-
-  useEffect(() => {
-    if (state.message) {
-      toast.success(state.message);
-      router.push("/admin/categories");
-      router.refresh();
-    } else if (state.error) {
-      toast.error("Operation failed:", {
-        description: state.error,
-      });
-      if (state.fields) {
-        Object.keys(state.fields).forEach((field) => {
-          form.setError(field as keyof CategoryFormValues, { message: state.fields![field] });
-        });
-      }
-    }
-    setIsUploading(false);
-  }, [state, router, form]);
 
   async function onSubmit(data: CategoryFormValues) {
     setIsUploading(true);
@@ -85,32 +79,40 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
 
     try {
       if (categoryImageFile) {
-        const formData = new FormData();
-        formData.append("file", categoryImageFile);
-        const uploadResult = await uploadImageToCloudinary(formData);
+        finalImageUrl = await uploadDirectToCloudinary(categoryImageFile);
+      }
 
-        if (uploadResult.success && uploadResult.url) {
-          finalImageUrl = uploadResult.url;
-        } else {
-          throw new Error(uploadResult.error || "Category image upload failed.");
+      let result;
+      if (isEditMode && initialData?.id) {
+        result = await updateCategory(initialData.id, {
+          name: data.name,
+          description: data.description,
+          image_url: finalImageUrl,
+          gender: data.gender,
+        });
+      } else {
+        const formDataForAction = new FormData();
+        formDataForAction.append("name", data.name);
+        if (data.description) {
+          formDataForAction.append("description", data.description);
         }
+        if (finalImageUrl) {
+          formDataForAction.append("image_url", finalImageUrl);
+        }
+        formDataForAction.append("gender", data.gender);
+        result = await createCategory({}, formDataForAction);
       }
-
-      const formDataForAction = new FormData();
-      formDataForAction.append("name", data.name);
-      if (data.description) {
-        formDataForAction.append("description", data.description);
+      if (result.error) {
+        throw new Error(result.error);
       }
-      if (finalImageUrl) {
-        formDataForAction.append("image_url", finalImageUrl);
-      }
-
-      formAction(formDataForAction);
-
+      toast.success(result.message || (isEditMode ? "Category updated!" : "Category created!"));
+      router.push("/admin/categories");
+      router.refresh();
     } catch (error: any) {
       toast.error("Operation failed:", {
         description: error.message || "There was a problem with your request.",
       });
+    } finally {
       setIsUploading(false);
     }
   }
@@ -183,6 +185,27 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
           )}
           <FormMessage>{form.formState.errors.image_url?.message}</FormMessage>
         </FormItem>
+
+        <FormField
+          control={form.control}
+          name="gender"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Gender</FormLabel>
+              <FormControl>
+                <select {...field} className="input input-bordered w-full">
+                  <option value="boys">Boys</option>
+                  <option value="girls">Girls</option>
+                  <option value="unisex">Unisex</option>
+                </select>
+              </FormControl>
+              <FormDescription>
+                Select the gender this category belongs to.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" disabled={form.formState.isSubmitting || isUploading}>
           {isUploading ? "Uploading..." : (form.formState.isSubmitting 

@@ -20,6 +20,7 @@ const CategoryActionSchema = z.object({
   name: z.string().min(2).max(100),
   description: z.string().max(500).optional(),
   image_url: z.string().url({ message: "Please enter a valid image URL." }).optional().or(z.literal('')),
+  gender: z.enum(["boys", "girls", "unisex"]).default("unisex"),
 });
 
 export type CategoryActionState = {
@@ -53,13 +54,15 @@ export async function createCategory(prevState: CategoryActionState, formData: F
   const name = formData.get('name')?.toString().trim() || '';
   const description = formData.get('description')?.toString().trim() || '';
   const image_url = formData.get('image_url')?.toString().trim() || '';
+  const gender = (formData.get('gender')?.toString() as "boys" | "girls" | "unisex") || 'unisex';
 
   // Validate the data on the server-side
   try {
     const validatedData = CategoryActionSchema.parse({
       name,
       description: description || undefined, // zod handles empty strings differently
-      image_url: image_url || undefined // zod handles empty strings differently
+      image_url: image_url || undefined, // zod handles empty strings differently
+      gender,
     });
 
     // Generate slug from name
@@ -71,6 +74,7 @@ export async function createCategory(prevState: CategoryActionState, formData: F
         name: validatedData.name, 
         description: validatedData.description || null, 
         image_url: validatedData.image_url || null,
+        gender: validatedData.gender,
         slug: slug 
       }
     ]).select().single();
@@ -100,28 +104,31 @@ export async function createCategory(prevState: CategoryActionState, formData: F
 
 export async function updateCategory(
   id: string,
-  data: { name: string; description?: string; image_url?: string }
+  data: { name: string; description?: string; image_url?: string; gender?: "boys" | "girls" | "unisex" }
 ): Promise<CategoryActionState> {
   const name = data.name?.toString().trim() || '';
   const description = data.description?.toString().trim() || '';
   const image_url = data.image_url?.toString().trim() || '';
+  const gender = (data.gender as "boys" | "girls" | "unisex") || 'unisex';
 
   try {
     const validatedData = CategoryActionSchema.parse({
       name,
       description: description || undefined,
-      image_url: image_url || undefined
+      image_url: image_url || undefined,
+      gender,
     });
 
     // Generate slug from name
     const slug = generateSlug(name);
 
-    const { data, error } = await supabaseAdmin
+    const { data: updatedData, error } = await supabaseAdmin
       .from('categories')
       .update({ 
         name: validatedData.name, 
         description: validatedData.description || null,
         image_url: validatedData.image_url || null,
+        gender: validatedData.gender,
         slug: slug 
       })
       .eq('id', id)
