@@ -85,7 +85,7 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
                   </div>
                 </div>
                 <div className="p-4 bg-neutral-850 ">
-                  <h3 className="text-sm uppercase tracking-wider font-bold text-[#a71e21]">{product.name}</h3>
+                  <h3 className="text-sm uppercase tracking-wider font-bold text-white">{product.name}</h3>
                 </div>
               </div>
             ))}
