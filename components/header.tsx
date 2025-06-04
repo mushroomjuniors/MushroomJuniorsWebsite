@@ -37,6 +37,62 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+const menSubCategories = [
+ 
+  { title: "Indo Western" },
+  { title: "Blazers" },
+  { title: "Sherwani" },
+  { title: "Suit" },
+  { title: "Boys Jeans" },
+  { title: "Boys Shirts" },
+  { title: "Boys T-Shirts" },
+  { title: "Casual-Wear" },
+  { title: "Boys Jackets" },
+  { title: "3/4 Denims" },
+  { title: "Tuxedos" },
+  { title: "Lowers" },
+];
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
+const womenSubCategories = [
+  { title: "Western Dress" },
+  { title: "Ethnic" },
+  { title: "Frocks" },
+  { title: "Gowns" },
+  { title: "Midis" },
+  { title: "Jeans" },
+  { title: "Leggings" },
+  { title: "Lowers" },
+  { title: "Jackets" },
+  { title: "Party Tops" },
+  { title: "Shorts" },
+  { title: "Toppers" },
+  { title: "T-Shirts" },
+];
+
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)

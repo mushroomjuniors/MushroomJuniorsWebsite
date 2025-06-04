@@ -24,16 +24,23 @@ export default function AboutPage() {
           <div>
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-muted-foreground mb-4">
-              Founded in 2010, Mushrooms Junior began with a simple mission: to provide high-quality, stylish clothing that
-              empowers people to express themselves through fashion.
+              Founded in June 2024, Mushrooms Junior was born from a very personal journey. 
+              As parents of three energetic and style-loving kids, we often struggled to find
+              clothing that struck the perfect balance — high-quality, comfortable, stylish, 
+              and reasonably priced. Most options were either too expensive or didn’t meet the 
+              quality we wanted for our children
             </p>
             <p className="text-muted-foreground mb-4">
-              What started as a small boutique has grown into a household name, but our commitment to quality,
-              sustainability, and customer satisfaction remains unchanged.
+              Inspired by our own family, we started Mushrooms Junior with a clear mission: to create 
+              thoughtfully designed children’s clothing that parents can trust and kids will love. 
+              What began as a small passion project quickly turned into a growing brand embraced 
+              by like-minded families.
             </p>
             <p className="text-muted-foreground">
-              We believe that great style shouldn't come at the expense of ethical practices, which is why we work
-              closely with responsible manufacturers who share our values.
+              At Mushrooms Junior, we believe fashion for kids should be fun, functional, and fair. 
+              That’s why we collaborate with ethical manufacturers who share our values of quality 
+              craftsmanship and sustainable practices. Every piece we offer is designed to make your 
+              little ones feel confident, comfortable, and carefree — without compromising on style or budget.
             </p>
           </div>
           <div className="relative h-[400px] rounded-lg overflow-hidden">

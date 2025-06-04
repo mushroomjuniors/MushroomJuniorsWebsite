@@ -20,25 +20,25 @@ const womenCollection = {
   products: [
     {
       id: "1",
-      name: "Midis",
+      name: "Ethnic Wear",
       price: 99.0,
-      image: "/midis.webp",
-      link: "/products?category=midis",
+      image: "https://res.cloudinary.com/dy0zo3822/image/upload/v1748796267/os5qaifpnycouo6wq356.jpg",
+      link: "/products?category=ethnic",
     },
     {
       id: "2",
-      name: "Gowns",
+      name: "Frocks",
       price: 39.0,
-      image: "/gowns.jpg",
-      link: "/products?category=gowns",
+      image: "https://res.cloudinary.com/dy0zo3822/image/upload/v1749034154/rbacatddkuis7zbkjymp.jpg",
+      link: "/products?category=frocks",
 
     },
     {
       id: "3",
-      name: "Ethnic Wear",
+      name: "Gowns",
       price: 89.0,
-      image: "/ethnic.webp",
-      link: "/products?category=ethnic",
+      image: "https://res.cloudinary.com/dy0zo3822/image/upload/v1748797365/ixoehetiafksj1jnw0zz.jpg",
+      link: "/products?category=gowns",
 
     },
   ],
@@ -52,25 +52,25 @@ const menCollection = {
   products: [
     {
       id: "1",
-      name: "Tuxedos",
+      name: "Indo Western",
       price: 99.0,
-      image: "/tuxedos.webp",
-      link: "/products?category=tuxedos"
+      image: "https://res.cloudinary.com/dy0zo3822/image/upload/v1748702068/k5aunfrex2ul9njqkpva.jpg",
+      link: "/products?category=indo-western"
     },
     {
       id: "2",
-      name: "Boys Party Wear",
+      name: "Sherwani",
       price: 39.0,
-      image: "/boys-party-wear.avif",
-      link: "/products?category=men-party-wear",
+      image: "https://res.cloudinary.com/dy0zo3822/image/upload/v1748701716/h8pxfxfqi7m1i7bsi7dq.jpg",
+      link: "/products?category=sherwani",
 
     },
     {
       id: "3",
-      name: "Jodhpuri",
+      name: "Blazers",
       price: 89.0,
-      image: "/jodhpuri.webp",
-      link: "/products?category=jodhpuri",
+      image: "https://res.cloudinary.com/dy0zo3822/image/upload/v1748701051/oqvwkxub1gzi9kzs4acq.jpg",
+      link: "/products?category=blazers",
 
     },
   ],
