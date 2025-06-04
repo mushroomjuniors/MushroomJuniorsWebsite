@@ -151,8 +151,8 @@ export const FashionCollection: React.FC<FashionCollectionProps> = ({
                     </Link>
                   </div>
                 </div>
-                <div className="p-4 bg-neutral-850">
-                  <h3 className="text-sm uppercase tracking-wider text-neutral-300">{product.name}</h3>
+                <div className="p-4 bg-neutral-[#a71e21]">
+                  <h3 className="text-sm uppercase tracking-wider font-bold text-white">{product.name}</h3>
                 </div>
               </div>
             ))}
