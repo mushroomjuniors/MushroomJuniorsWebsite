@@ -71,7 +71,7 @@ const ListItem = React.forwardRef<
 })
 ListItem.displayName = "ListItem"
 const womenSubCategories = [
-  { title: "Dungree" },
+  { title: "Western Dress" },
   { title: "Ethnic" },
   { title: "Frocks" },
   { title: "Gowns" },
