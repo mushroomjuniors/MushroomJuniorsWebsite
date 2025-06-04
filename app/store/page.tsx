@@ -25,7 +25,7 @@ export interface Product {
 }
 
 
-const SIZES = ["XS", "S", "M", "L", "XL", "XXL"]; // Define available sizes
+const SIZES = ["1-3", "3-6", "6-9", "9-12", "12-15"]; // Define available sizes
 
 export default function StorePage() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
