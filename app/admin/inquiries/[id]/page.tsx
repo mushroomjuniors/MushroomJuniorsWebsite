@@ -170,7 +170,7 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
           {inquiry.cart_items && inquiry.cart_items.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle><ShoppingCart className="inline mr-2 h-5 w-5" />Inquired Cart Items ({inquiry.cart_items.length})</CardTitle>
+                <CardTitle><ShoppingCart className="inline mr-2 h-5 w-5" />Enquired Cart Items ({inquiry.cart_items.length})</CardTitle>
                 <CardDescription>Products the user was inquiring about.</CardDescription>
               </CardHeader>
               <CardContent>
@@ -211,7 +211,7 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
                       </TableRow>
                     ))}
                   </TableBody>
-                   <TableCaption>Total Value of Inquired Items: ${inquiry.cart_items.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</TableCaption>
+                   <TableCaption>Total Value of Enquired Items: ${inquiry.cart_items.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</TableCaption>
                 </Table>
               </CardContent>
             </Card>

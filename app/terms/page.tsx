@@ -8,11 +8,17 @@ export default function TermsAndConditions() {
       <h2 className="text-xl font-semibold mt-6 mb-2">Orders and Payments</h2>
       <p className="mb-4">All orders are subject to availability and acceptance. Payment must be made in full at the time of purchase. We reserve the right to refuse or cancel any order at our discretion.</p>
       <h2 className="text-xl font-semibold mt-6 mb-2">Returns and Exchanges</h2>
-      <p className="mb-4">We want you to be happy with your purchase! Exchanges can we done within 7 of purchase. Items must be returned in original condition within the specified period.</p>
+      <ul className="mb-4 list-disc pl-6">
+        <li>Product can be exchanged within 7 days with the original invoice.</li>
+        <li>Exchange only if the product is in new condition, unwashed, unworn, with all tags attached.</li>
+        <li>Products sold under sale or promotion period will not be exchanged, and no refund will be issued.</li>
+        <li>Subject to UDAIPUR jurisdiction only.</li>
+        <li>E.&O.E.</li>
+      </ul>
       <h2 className="text-xl font-semibold mt-6 mb-2">Intellectual Property</h2>
       <p className="mb-4">All content on this site, including images, logos, and text, is the property of Mushroom Junior or its licensors and is protected by copyright laws. You may not use or reproduce any content without permission.</p>
     <h2 className="text-xl font-semibold mt-6 mb-2">Contact Us</h2>
-      <p>If you have any questions about these Terms and Conditions, please contact us at <a href="mailto:info@mushroomjunior.com" className="text-blue-600 underline">info@mushroomjunior.com</a>.</p>
+      <p>If you have any questions about these Terms and Conditions, please contact us at <a href="mailto:mushroomjuniors@gmail.com" className="text-blue-600 underline">mushroomjuniors@gmail.com</a>.</p>
     </main>
   );
 }

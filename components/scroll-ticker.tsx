@@ -24,11 +24,13 @@ export function ScrollTicker() {
             .fill(0)
             .map((_, i) => (
               <div key={i} className="mx-4 flex items-center">
-                <span className="font-medium">FREE SHIPPING ON ORDERS OVER 1000</span>
+                <span className="font-medium">50% OFF</span>
                 <span className="mx-4 text-red-500">•</span>
-                <span className="font-medium">NEW ARRIVALS EVERY WEEK</span>
+                <span className="font-medium">15% OFF ON BIRTHDAY MONTH</span>
                 <span className="mx-4 text-red-500">•</span>
-                <span className="font-medium">BUY 2 PRODUCTS GET 10% OFF</span>
+                <span className="font-medium">GIFT OFFERS MRP</span>
+                <span className="mx-4 text-red-500">•</span>
+                <span className="font-medium">PROMOTION OFFERS ON MINIMUM PURCHASE</span>
                 <span className="mx-4 text-red-500">•</span>
               </div>
             ))}

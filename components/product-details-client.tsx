@@ -426,9 +426,13 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
                 </div>
                 <div>
                   <h3 className="font-medium">Returns and Exchanges</h3>
-                  <p className="text-gray-700">
-                    Exchange available within 7 days. Items must be unworn with original tags attached.
-                  </p>
+                  <ul className="text-gray-700 list-disc pl-6">
+                    <li>Product can be exchanged within 7 days with the original invoice.</li>
+                    <li>Exchange only if the product is in new condition, unwashed, unworn, with all tags attached.</li>
+                    <li>Products sold under sale or promotion period will not be exchanged, and no refund will be issued.</li>
+                    <li>Subject to UDAIPUR jurisdiction only.</li>
+                    <li>E.&O.E.</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -438,13 +442,10 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
             <div className="py-8">
               <h2 className="text-2xl font-medium mb-4">About the Brand</h2>
               <p className="text-gray-700 mb-4">
-                Mushrooms Junior is a brand that offers high-quality, stylish clothing for children. Founded in 2010,
-                Mushrooms Junior began with a simple mission: to provide high-quality, stylish clothing that
-                empowers people to express themselves through fashion.
+                Mushroom Juniors is a luxury kids clothing brand founded in June 2024. Our mission is to provide high-quality, stylish clothing for boys and girls, offering a wide range for ages 0-15. We believe in empowering children to express themselves through fashion, with a focus on quality, comfort, and timeless style.
               </p>
               <p className="text-gray-700">
-                Since 2010, Mushrooms Junior has been at the heart of children's fashion. Their clothing is worn by the best children
-                in the world and have become an icon of youth and fashion.
+                Since our founding, Mushroom Juniors has been dedicated to redefining children's fashion. Our collections are designed for the best kids in the world, making them feel confident, comfortable, and fashionable at every age.
               </p>
             </div>
           </TabsContent>

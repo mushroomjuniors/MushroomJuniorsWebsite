@@ -38,11 +38,11 @@ const productFormSchema = z.object({
   image_urls: z
     .array(z.string().url("Invalid URL for gallery image. Should be a Cloudinary URL after upload."))
     .optional(),
-  sizes: z.array(z.enum(["1-3", "3-6", "6-9", "9-12", "12-15"])).optional(),
+  sizes: z.array(z.enum(["0-1", "1-3", "3-6", "6-9", "9-12", "12-15"])).optional(),
   is_trending: z.boolean().default(false).optional(),
 })
 
-export const availableSizes = ["1-3", "3-6", "6-9", "9-12", "12-15"] as const
+export const availableSizes = ["0-1", "1-3", "3-6", "6-9", "9-12", "12-15"] as const
 
 export type ProductFormValues = z.infer<typeof productFormSchema>
 
