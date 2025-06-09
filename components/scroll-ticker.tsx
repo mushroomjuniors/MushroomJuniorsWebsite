@@ -24,8 +24,7 @@ export function ScrollTicker() {
             .fill(0)
             .map((_, i) => (
               <div key={i} className="mx-4 flex items-center">
-                <span className="font-medium">50% OFF</span>
-                <span className="mx-4 text-red-500">•</span>
+                
                 <span className="font-medium">15% OFF ON BIRTHDAY MONTH</span>
                 <span className="mx-4 text-red-500">•</span>
                 <span className="font-medium">GIFT OFFERS MRP</span>
