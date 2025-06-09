@@ -219,7 +219,7 @@ export function Header() {
           <img
             src={isHomePage && !scrolled ? "/logo0n.png" : "/logo2n.png"}
             alt="Mushroom Junior Logo"
-            className="h-[50px] md:h-[62px] w-auto"
+            className="h-[50px] md:h-[55px] w-auto"
           />
         </Link>
 
