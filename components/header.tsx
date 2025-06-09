@@ -277,11 +277,17 @@ export function Header() {
                     }}
                   >
                     {boysCategories.map((cat) => (
-                      <li key={cat.id}>
+                      <li key={cat.id} className="relative group rounded-md overflow-hidden transition-all duration-300">
+                        <span
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+                          style={{
+                            background: 'linear-gradient(135deg, #800000 0%, #b22234 100%)',
+                          }}
+                        />
                         <NavigationMenuLink asChild>
                           <Link
                             href={`/products?category=${cat.slug}`}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                            className="relative block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors z-10 group-hover:text-white"
                           >
                             <div className="text-sm font-medium leading-none">{cat.name}</div>
                           </Link>
@@ -330,13 +336,19 @@ export function Header() {
                     }}
                   >
                     {girlsCategories.map((cat) => (
-                      <li key={cat.id}>
+                      <li key={cat.id} className="relative group rounded-md overflow-hidden transition-all duration-300">
+                        <span
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+                          style={{
+                            background: 'linear-gradient(135deg, #800000 0%, #b22234 100%)',
+                          }}
+                        />
                         <NavigationMenuLink asChild>
                           <Link
                             href={`/products?category=${cat.slug}`}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left"
+                            className="relative block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors z-10 group-hover:text-white"
                           >
-                            <div className="text-sm font-medium leading-none ">{cat.name}</div>
+                            <div className="text-sm font-medium leading-none">{cat.name}</div>
                           </Link>
                         </NavigationMenuLink>
                       </li>
