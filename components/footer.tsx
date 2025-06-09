@@ -79,6 +79,11 @@ export function Footer() {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link href="/franchise" className="text-white/70 hover:text-white">
+                  Franchise
+                </Link>
+              </li>
               {/* <li>
                 <Link href="/checkout" className="text-white/70 hover:text-white">
                   Checkout
