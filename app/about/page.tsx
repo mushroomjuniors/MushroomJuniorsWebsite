@@ -24,14 +24,14 @@ export default function AboutPage() {
           <div>
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-muted-foreground mb-4">
-              Founded in June 2024, Mushroom Juniors is a luxury kids clothing brand created from a very personal journey. 
+              Founded in June 2024, Mushroom Junior's is a luxury kids clothing brand created from a very personal journey. 
               As parents of three style-loving kids, we often struggled to find clothing that struck the perfect balance — high-quality, comfortable, stylish, and reasonably priced. Most options were either too expensive or didn't meet the quality we wanted for our children.
             </p>
             <p className="text-muted-foreground mb-4">
               Inspired by our own family, we started Mushroom Juniors with a clear mission: to create thoughtfully designed luxury children's clothing for both boys and girls, offering a wide range for ages 0-15. What began as a small passion project quickly turned into a growing brand embraced by like-minded families.
             </p>
             <p className="text-muted-foreground">
-              At Mushroom Juniors, we believe fashion for kids should be fun, functional, and fair. That's why we collaborate with ethical manufacturers who share our values of quality craftsmanship and sustainable practices. Every piece we offer is designed to make your little ones feel confident, comfortable, and carefree — without compromising on style or budget.
+              At Mushroom Junior's, we believe fashion for kids should be fun, functional, and fair. That's why we collaborate with ethical manufacturers who share our values of quality craftsmanship and sustainable practices. Every piece we offer is designed to make your little ones feel confident, comfortable, and carefree — without compromising on style or budget.
             </p>
           </div>
           <div className="relative h-[400px] rounded-lg overflow-hidden">
