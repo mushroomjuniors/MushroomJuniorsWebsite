@@ -40,7 +40,7 @@ export function CTAPopup() {
         </Button>
         <div className="flex items-center justify-center w-full h-full p-0">
           <Image
-            src="/cta-popup.png"
+            src="/cta-popup2.png"
             alt="Special Offer"
             width={1040}
             height={520}
