@@ -22,7 +22,7 @@ export default function CartPage() {
     }
     if (cartItems.length === 0) {
       toast.info("Your cart is empty", {
-        description: "Add items to your cart to inquire on WhatsApp.",
+        description: "Add items to your cart to purchase on WhatsApp.",
       });
       return;
     }
@@ -170,7 +170,7 @@ export default function CartPage() {
                 disabled={cartItems.length === 0}
               >
                 <MessageSquare className="h-5 w-5 mr-2" />
-                Inquire on WhatsApp
+                Purchase on WhatsApp
               </Button>
             </CardFooter>
           </Card>
