@@ -38,7 +38,7 @@ const productFormSchema = z.object({
   image_urls: z
     .array(z.string().url("Invalid URL for gallery image. Should be a Cloudinary URL after upload."))
     .optional(),
-  sizes: z.array(z.enum(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")).optional(),
+  sizes: z.array(z.enum(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"])).optional(),
   is_trending: z.boolean().default(false).optional(),
 })
 
