@@ -38,7 +38,7 @@ const productFormSchema = z.object({
   image_urls: z
     .array(z.string().url("Invalid URL for gallery image. Should be a Cloudinary URL after upload."))
     .optional(),
-  sizes: z.array(z.enum(["0-1", "1-3", "3-6", "6-9", "9-12", "12-15"])).optional(),
+  sizes: z.array(z.enum(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")).optional(),
   is_trending: z.boolean().default(false).optional(),
 })
 
@@ -361,7 +361,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                       />
                     </FormControl>
                     <FormLabel htmlFor={`size-${size}`} className="font-normal cursor-pointer flex-1">
-                      {size} yrs
+                      {size} yr
                     </FormLabel>
                   </FormItem>
                 ))}
