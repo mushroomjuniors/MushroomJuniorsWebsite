@@ -42,7 +42,7 @@ const productFormSchema = z.object({
   is_trending: z.boolean().default(false).optional(),
 })
 
-export const availableSizes = ["0-1", "1-3", "3-6", "6-9", "9-12", "12-15"] as const
+export const availableSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"] as const
 
 export type ProductFormValues = z.infer<typeof productFormSchema>
 
