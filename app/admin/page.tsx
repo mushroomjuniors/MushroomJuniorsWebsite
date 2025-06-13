@@ -207,7 +207,7 @@ export default async function AdminDashboard() {
         </Card>
         <div className="flex items-start justify-end">
           <a
-            href="https://analytics.google.com/analytics/web/"
+            href="https://analytics.google.com/analytics/web/#/p493230637/reports/intelligenthome?params=_u..nav%3Dmaui"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 bg-black text-white font-semibold rounded hover:bg-red-700 transition-colors duration-150"
