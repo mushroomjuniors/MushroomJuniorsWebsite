@@ -8,12 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      // {
-      //   protocol: 'https',
-      //   hostname: 'res.cloudinary.com',
-      //   port: '',
-      //   pathname: '/**',
-      // },
+       {
+         protocol: 'https',
+         hostname: 'res.cloudinary.com',
+         port: '',
+         pathname: '/**',
+       },
       // You can add other domains here if needed in the future
       // For example, if your Supabase storage has a specific hostname:
       // {
